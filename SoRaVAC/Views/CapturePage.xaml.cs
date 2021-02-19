@@ -1,0 +1,313 @@
+﻿using Microsoft.Toolkit.Wpf.UI.XamlHost;
+using SoRaVAC.Contracts.Views;
+using SoRaVAC.Core;
+using SoRaVAC.Helpers;
+using SoRaVAC.Models;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using Windows.Devices.Enumeration;
+using Windows.Graphics.Display;
+using Windows.Media.Audio;
+using Windows.Media.Capture;
+using Windows.Media.Render;
+using Windows.System.Display;
+
+namespace SoRaVAC.Views
+{
+    public partial class CapturePage : Page, INavigationAware, INotifyPropertyChanged
+    {
+        private PreferedDeviceInformation VideoSource;
+        private PreferedDeviceInformation AudioSource;
+        private PreferedDeviceInformation AudioRenderer;
+
+        private MediaCapture mediaCapture;
+        private AudioGraph graph;
+        private AudioDeviceOutputNode deviceOutputNode;
+        private AudioDeviceInputNode deviceInputNode;
+
+        private double _soundVolume;
+
+        public double SoundVolume
+        {
+            get => _soundVolume;
+            set
+            {
+                Set(ref _soundVolume, value);
+            }
+        }
+
+        public PlayingStatusEnum PlayingStatus;
+
+        public CapturePage()
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            PlayingStatus = PlayingStatusEnum.Stopped;
+
+            double soundVolume = AudioVideoSettingsStorageHelper.LoadSoundVolume();
+            _ = Dispatcher.InvokeAsync(() => SoundVolume = soundVolume);
+
+            VideoSource = AudioVideoSettingsStorageHelper.LoadPreferedVideoSource();
+            AudioSource = AudioVideoSettingsStorageHelper.LoadPreferedAudioSource();
+            AudioRenderer = AudioVideoSettingsStorageHelper.LoadPreferedAudioRenderer();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
+        {
+            if (Equals(storage, value))
+            {
+                return;
+            }
+
+            storage = value;
+            OnPropertyChanged(propertyName);
+        }
+
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        public void OnNavigatedTo(object parameter) 
+        {
+        }
+        public void OnNavigatedFrom()
+        {
+            if (PlayingStatus == PlayingStatusEnum.Playing)
+            {
+                _ = StopCaptureAsync();
+            }
+        }
+
+        private async void PlayStopButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (VideoSource != null && AudioSource != null && AudioRenderer != null)
+            {
+                if (PlayingStatus == PlayingStatusEnum.Playing)
+                {
+                    await StopCaptureAsync();
+                }
+                else
+                {
+                    try
+                    { 
+                    await StartCaptureAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        string message = $"Unable to start the capture, please check if the device is plugged.{Environment.NewLine}You may also go in Settings and select another device.";
+                        string caption = "Capture error";
+                        MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                string message = "Please setup video and audio devices in the Settings panel before starting the capture.";
+                string caption = "No Capture device selected";
+                MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async Task StartCaptureAsync()
+        {
+            MediaCaptureInitializationSettings captureInitSettings = InitVideoCaptureSettings();
+            await InitVideoCapture(captureInitSettings);
+            await InitAudioCapture();
+            await mediaCapture.StartPreviewAsync();
+            graph.Start();
+            NativeMethods.PreventSleep();
+            PlayingStatus = PlayingStatusEnum.Playing;
+            SizeChangeDetectorGrid.Visibility = System.Windows.Visibility.Visible;
+            ToolTipService.SetToolTip(PlayStopButton, "Stop capture");
+            PlayStopButton.Content = "\uE71A";
+        }
+
+        private async Task StopCaptureAsync(PlayingStatusEnum resultingPlayingStatus = PlayingStatusEnum.Stopped)
+        {
+            graph.Stop();
+            await mediaCapture.StopPreviewAsync();
+            NativeMethods.AllowSleep();
+            PlayingStatus = resultingPlayingStatus;
+            SizeChangeDetectorGrid.Visibility = System.Windows.Visibility.Hidden;
+            ToolTipService.SetToolTip(PlayStopButton, "Start capture");
+            PlayStopButton.Content = "\uE768";
+        }
+
+        private void SoundVolumeSlider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (sender is Slider slider)
+            {
+                SoundVolumeTextBlock.Text = $"{slider.Value:N0}%";
+                if (deviceOutputNode != null)
+                {
+                    deviceOutputNode.OutgoingGain = slider.Value / 100.0;
+                }
+            }
+        }
+
+        private void OnMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            // Using mouse wheel to update sound volume
+            int roundedValue = (int)Math.Round(SoundVolume);
+            if (e.Delta > 0 && roundedValue < 100)
+            {
+                SoundVolume = roundedValue + 1;
+            }
+            else if (roundedValue > 0)
+            {
+                SoundVolume = roundedValue - 1;
+            }
+        }
+
+        private void SizeChangeDetectorGrid_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+        {
+            if (CaptureElementXamlHost != null)
+            {
+                if (SizeChangeDetectorGrid.ActualHeight >= 2160 && SizeChangeDetectorGrid.ActualWidth >= 3840)
+                {
+                    CapturePreviewUpdateSize(3840, 2160);
+                }
+                else if (SizeChangeDetectorGrid.ActualHeight >= 1440 && SizeChangeDetectorGrid.ActualWidth >= 2560)
+                {
+                    CapturePreviewUpdateSize(2560, 1440);
+                }
+                else if (SizeChangeDetectorGrid.ActualHeight >= 1080 && SizeChangeDetectorGrid.ActualWidth >= 1920)
+                {
+                    CapturePreviewUpdateSize(1920, 1080);
+                }
+                else if (SizeChangeDetectorGrid.ActualHeight >= 944 && SizeChangeDetectorGrid.ActualWidth >= 1680)
+                {
+                    CapturePreviewUpdateSize(1680, 944);
+                }
+                else if (SizeChangeDetectorGrid.ActualHeight >= 768 && SizeChangeDetectorGrid.ActualWidth >= 1366)
+                {
+                    CapturePreviewUpdateSize(1366, 768);
+                }
+                else if (SizeChangeDetectorGrid.ActualHeight >= 720 && SizeChangeDetectorGrid.ActualWidth >= 1280)
+                {
+                    CapturePreviewUpdateSize(1280, 720);
+                }
+                else if (SizeChangeDetectorGrid.ActualHeight >= 576 && SizeChangeDetectorGrid.ActualWidth >= 1024)
+                {
+                    CapturePreviewUpdateSize(1024, 576);
+                }
+                else if (SizeChangeDetectorGrid.ActualHeight >= 480 && SizeChangeDetectorGrid.ActualWidth >= 584)
+                {
+                    CapturePreviewUpdateSize(854, 480);
+                }
+                else
+                {
+                    // We do nothing
+                }
+            }
+        }
+
+        private void CapturePreviewUpdateSize(double w, double h)
+        {
+            if (CaptureElementXamlHost.Width != w)
+            {
+                CaptureElementXamlHost.Width = w;
+                CaptureElementXamlHost.Height = h;
+                Debug.WriteLine($"Caputre size set to {h}p");
+            }
+        }
+
+        private MediaCaptureInitializationSettings InitVideoCaptureSettings()
+        {
+            return new MediaCaptureInitializationSettings()
+            {
+                AudioDeviceId = "",
+                VideoDeviceId = VideoSource.Id,
+                StreamingCaptureMode = StreamingCaptureMode.AudioAndVideo,
+                PhotoCaptureSource = PhotoCaptureSource.VideoPreview
+            };
+        }
+
+        private async Task InitVideoCapture(MediaCaptureInitializationSettings captureInitSettings)
+        {
+            DisplayRequest displayRequest = new DisplayRequest();
+            mediaCapture = new MediaCapture();
+            await mediaCapture.InitializeAsync(captureInitSettings);
+            displayRequest.RequestActive();
+            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
+            
+            Windows.UI.Xaml.Controls.CaptureElement captureElement = (Windows.UI.Xaml.Controls.CaptureElement)CaptureElementXamlHost.Child;
+            captureElement.Source = mediaCapture;
+        }
+        private async Task InitAudioCapture()
+        {
+            AudioGraphSettings settings = new AudioGraphSettings(AudioRenderCategory.Media)
+            {
+                QuantumSizeSelectionMode = QuantumSizeSelectionMode.LowestLatency,
+                PrimaryRenderDevice = await DeviceInformation.CreateFromIdAsync(AudioRenderer.Id)
+            };
+
+            CreateAudioGraphResult result = await AudioGraph.CreateAsync(settings);
+
+            if (result.Status != AudioGraphCreationStatus.Success)
+            {
+                // Cannot create graph
+                Debug.WriteLine($"AudioGraph Creation Error because {result.Status}");
+                return;
+            }
+
+            graph = result.Graph;
+            Debug.WriteLine("Graph successfully created!");
+
+            // Create a device output node
+            CreateAudioDeviceOutputNodeResult deviceOutputNodeResult = await graph.CreateDeviceOutputNodeAsync();
+            if (deviceOutputNodeResult.Status != AudioDeviceNodeCreationStatus.Success)
+            {
+                // Cannot create device output node
+                Debug.WriteLine($"Audio Device Output unavailable because {deviceOutputNodeResult.Status}");
+                return;
+            }
+
+            deviceOutputNode = deviceOutputNodeResult.DeviceOutputNode;
+            deviceOutputNode.OutgoingGain = SoundVolume / 100.0;
+            Debug.WriteLine("Device Output connection successfully created");
+
+            // Create a device input node using the default audio input device
+            CreateAudioDeviceInputNodeResult deviceInputNodeResult = await graph.CreateDeviceInputNodeAsync(MediaCategory.Other, graph.EncodingProperties, await DeviceInformation.CreateFromIdAsync(AudioSource.Id));
+
+            if (deviceInputNodeResult.Status != AudioDeviceNodeCreationStatus.Success)
+            {
+                // Cannot create device input node
+                Debug.WriteLine($"Audio Device Input unavailable because {deviceOutputNodeResult.Status}");
+                return;
+            }
+
+            deviceInputNode = deviceInputNodeResult.DeviceInputNode;
+            Debug.WriteLine("Device Input connection successfully created");
+
+            deviceInputNode.AddOutgoingConnection(deviceOutputNode);
+
+            // Because we are using lowest latency setting, we need to handle device disconnection errors
+            graph.UnrecoverableErrorOccurred += Graph_UnrecoverableErrorOccurred;
+        }
+
+        private async void Graph_UnrecoverableErrorOccurred(AudioGraph sender, AudioGraphUnrecoverableErrorOccurredEventArgs args)
+        {
+            // Recreate the graph and all nodes when this happens
+            await Dispatcher.InvokeAsync(async () =>
+            {
+                sender.Dispose();
+                // Re-query for devices
+                //_ = EnumerateVideoAndAudioDevices();
+                // Reset UI
+            });
+        }
+    }
+
+    public enum PlayingStatusEnum
+    {
+        Playing, Paused, Stopped,
+    }
+}
