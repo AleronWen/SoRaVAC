@@ -2,7 +2,7 @@
 
 ## Description
 
-Some Random Video Adapter get an audio/video stream from a capture adapter (UBS or Internal) to play on your computer.
+Some Random Video Adapter get an audio/video stream from a capture adapter (UBS or Internal device that is detected by Windows as a Video Capture device) to play on your computer.
 
 ## History behind the project
 
@@ -29,6 +29,16 @@ Unzip the release package anywhere on your computer.
 Launch **SoRaVAC.exe**. In Settings, register the video source (the video capture adapter), the audio source  (the video capture adapter virtual internace) and the audio renderer (the basic output for audio), the in the Capture panel press the play button.
 
 Windows may ask you to authorize *Webcam* and *microphone* usage. You should do it if you want to play...
+
+## Known supported an unsupported devices
+
+The following devices are supported:
+
+- Hagibis UHC05 
+
+The following devices are **not** supported:
+
+- Elgato Game Capture HD is not supported
 
 ## Support
 
