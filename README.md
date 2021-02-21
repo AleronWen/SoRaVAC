@@ -38,7 +38,7 @@ The following devices are supported:
 
 The following devices are **not** supported:
 
-- Elgato Game Capture HD is not supported
+- Elgato Game Capture HD
 
 ## Support
 
