@@ -34,9 +34,13 @@ Windows may ask you to authorize *Webcam* and *microphone* usage. You should do 
 
 The following devices are supported:
 
-- Hagibis UHC05 
-- Avermedia Live Gamer Ultra (GC553)
-- AMANKA CJQ-ES (Warning: image quality is not very good)
+- High End
+    - Avermedia Live Gamer Ultra (GC553)
+- Cheap adapters (USB 3)
+    - Hagibis UHC05
+- Cheap adapters (USB 2)
+    - AMANKA CJQ-ES (Warning: image quality is not very good)
+    - ATopoler S1788016410
 
 The following devices are **not** supported:
 
