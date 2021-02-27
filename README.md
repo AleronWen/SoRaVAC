@@ -35,7 +35,7 @@ Windows may ask you to authorize *Webcam* and *microphone* usage. You should do 
 The following devices are supported:
 
 - High End
-    - Avermedia Live Gamer Ultra (GC553)
+    - Avermedia Live Gamer Ultra GC553 (Note: Audio is reported to be a little bit out of sync)
 - Cheap adapters (USB 3)
     - Hagibis UHC05
 - Cheap adapters (USB 2)
