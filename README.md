@@ -53,7 +53,7 @@ Please use the GitHub's **Issues** functionality.
 ## Roadmap
 
 - [ ] proper packaging
-- [ ] full screen mode
+- [x] full screen mode
 - [ ] Possibility to capture without using the prefered devices
 - [ ] Display prefered devices status on the capture page
 - [ ] UI/UX review
