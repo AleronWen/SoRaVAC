@@ -11,14 +11,16 @@
     d:DesignHeight="450" d:DesignWidth="800" MouseWheel="OnMouseWheel">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48" />
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock
+            x:Name="PageTitle"
             Style="{StaticResource PageTitleStyle}"
-            Margin="{StaticResource MediumLeftMargin}"
+            Margin="{StaticResource PageTitleMargin}"
             Text="{x:Static properties:Resources.CapturePageTitle}" />
         <Grid
+            x:Name="PageContent"
             Grid.Row="1"
             Margin="{StaticResource MediumLeftRightMargin}"
             Background="{DynamicResource MahApps.Brushes.Gray10}">
@@ -39,7 +41,7 @@
                 <TextBlock x:Name="SoundVolumeTextBlock" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Text="PH%" Width="50"/>
             </StackPanel>
 
-            <Grid x:Name="SizeChangeDetectorGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" SizeChanged="SizeChangeDetectorGrid_SizeChanged" Visibility="Hidden">
+            <Grid x:Name="SizeChangeDetectorGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" SizeChanged="SizeChangeDetectorGrid_SizeChanged" Visibility="Hidden" Background="Black">
                 <xamlhost:WindowsXamlHost x:Name="CaptureElementXamlHost" InitialTypeName="Windows.UI.Xaml.Controls.CaptureElement"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </Grid>

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Input;
 using MahApps.Metro.Controls;
 
 using SoRaVAC.Contracts.Services;
@@ -13,10 +14,11 @@ using SoRaVAC.Contracts.Views;
 
 namespace SoRaVAC.Views
 {
-    public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyChanged
+    public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyChanged, IFullScreenMode
     {
         private readonly INavigationService _navigationService;
         private bool _canGoBack;
+        private bool _isFullScreenMode;
         private HamburgerMenuItem _selectedMenuItem;
         private HamburgerMenuItem _selectedOptionsMenuItem;
 
@@ -38,6 +40,11 @@ namespace SoRaVAC.Views
             set { Set(ref _selectedOptionsMenuItem, value); }
         }
 
+        public bool IsFullScreenMode {
+            get { return _isFullScreenMode; }
+            set { Set(ref _isFullScreenMode, value); }
+        }
+
         // TODO WTS: Change the icons and titles for all HamburgerMenuItems here.
         public ObservableCollection<HamburgerMenuItem> MenuItems { get; } = new ObservableCollection<HamburgerMenuItem>()
         {
@@ -52,7 +59,10 @@ namespace SoRaVAC.Views
         public ShellWindow(INavigationService navigationService)
         {
             _navigationService = navigationService;
+            _isFullScreenMode = false;
+
             InitializeComponent();
+
             if (Application.Current.Properties.Contains("width"))
             {
                 double.TryParse((string)Application.Current.Properties["width"], out double value);
@@ -83,6 +93,30 @@ namespace SoRaVAC.Views
             }
 
             DataContext = this;
+
+            Application.Current.MainWindow.KeyDown += MainWindow_KeyDown;
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                if (IsFullScreenMode)
+                {
+                    ExitFullScreenMode();
+                }
+            }
+            else if (e.Key == Key.F11)
+            {
+                if (IsFullScreenMode)
+                {
+                    ExitFullScreenMode();
+                }
+                else
+                {
+                    EnterFullScreenMode();
+                }
+            }
         }
 
         public Frame GetNavigationFrame()
@@ -158,14 +192,64 @@ namespace SoRaVAC.Views
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {            
-            Application.Current.Properties["width"] = ((int)this.ActualWidth).ToString();
-            Application.Current.Properties["height"] = ((int)this.ActualHeight).ToString();
+        {
+            // We do not save things in full screen mode
+            if (!IsFullScreenMode)
+            {
+                Application.Current.Properties["width"] = ((int)this.ActualWidth).ToString();
+                Application.Current.Properties["height"] = ((int)this.ActualHeight).ToString();
+            }
         }
 
         private void OnStageChanged(object sender, EventArgs e)
         {
-            Application.Current.Properties["WindowState"] = this.WindowState.ToString();
+            // We do not save things in full screen mode
+            if (!IsFullScreenMode)
+            {
+                Application.Current.Properties["WindowState"] = this.WindowState.ToString();
+            }
+        }
+
+
+        public void EnterFullScreenMode()
+        {
+            // Check that full screen mode is activated is delegated to caller
+            // Now checking that the current content is the Capture Page
+            if (GetNavigationFrame().Content is IFullScreenMode page)
+            {
+                // activating full screen mode to prevent side effects
+                IsFullScreenMode = true;
+
+                page.EnterFullScreenMode();
+
+                WindowStyle = WindowStyle.None;
+                IgnoreTaskbarOnMaximize = true;
+                ResizeMode = ResizeMode.NoResize;
+                WindowState = WindowState.Maximized;
+                Topmost = true;
+
+                ShowTitleBar = false;
+                hamburgerMenu.DisplayMode = SplitViewDisplayMode.Overlay;
+                hamburgerMenu.IsPaneOpen = false;
+            }
+        }
+
+        public void ExitFullScreenMode()
+        {
+            WindowStyle = WindowStyle.SingleBorderWindow;
+            IgnoreTaskbarOnMaximize = false;
+            ResizeMode = ResizeMode.CanResize;
+            WindowState = WindowState.Normal;
+            Topmost = false;
+
+            ShowTitleBar = true;
+            hamburgerMenu.DisplayMode = SplitViewDisplayMode.CompactInline;
+            hamburgerMenu.IsPaneOpen = true;
+
+            ((IFullScreenMode)GetNavigationFrame().Content).ExitFullScreenMode();
+
+            // Deactivating full screen mode
+            IsFullScreenMode = false;
         }
     }
 }
