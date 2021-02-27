@@ -25,7 +25,7 @@
             </Grid.RowDefinitions>
             <TextBlock
                 Style="{StaticResource PageTitleStyle}"
-                Margin="{StaticResource PageTitleMaring}"
+                Margin="{StaticResource PageTitleMargin}"
                 Text="{x:Static properties:Resources.SettingsPageTitle}" />
             <StackPanel
                 x:Name="ContentArea"
