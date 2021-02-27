@@ -1,24 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-using System.Threading;
 
 namespace SoRaVAC
 {
     class Program
     {
-        [System.STAThreadAttribute()]
+        [STAThread()]
         public static void Main()
         {
             using (new SoRaVACUWP.App())
             {
-                /* uncomment for testing purpose */
+                /* uncomment for testing purpose * /
                 CultureInfo ci = new CultureInfo("en-US");
                 Thread.CurrentThread.CurrentCulture = ci;
                 Thread.CurrentThread.CurrentUICulture = ci;
                 /* */
-                SoRaVAC.App app = new SoRaVAC.App();
+                App app = new App();
                 app.InitializeComponent();
                 app.Run();
             }

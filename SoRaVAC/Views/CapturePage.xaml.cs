@@ -6,6 +6,7 @@ using SoRaVAC.Models;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,10 +17,11 @@ using Windows.Media.Audio;
 using Windows.Media.Capture;
 using Windows.Media.Render;
 using Windows.System.Display;
+using Windows.UI.Xaml.Media;
 
 namespace SoRaVAC.Views
 {
-    public partial class CapturePage : Page, INavigationAware, INotifyPropertyChanged
+    public partial class CapturePage : Page, INavigationAware, INotifyPropertyChanged, IFullScreenMode
     {
         private PreferedDeviceInformation VideoSource;
         private PreferedDeviceInformation AudioSource;
@@ -32,6 +34,9 @@ namespace SoRaVAC.Views
 
         private double _soundVolume;
 
+        private bool _isFullScreenMode;
+        private bool _IsPointerWheelChangedSuscribed;
+
         public double SoundVolume
         {
             get => _soundVolume;
@@ -41,10 +46,18 @@ namespace SoRaVAC.Views
             }
         }
 
+        public bool IsFullScreenMode
+        {
+            get { return _isFullScreenMode; }
+            set { Set(ref _isFullScreenMode, value); }
+        }
+
         public PlayingStatusEnum PlayingStatus;
 
         public CapturePage()
         {
+            _IsPointerWheelChangedSuscribed = false;
+
             InitializeComponent();
             DataContext = this;
 
@@ -124,7 +137,7 @@ namespace SoRaVAC.Views
             graph.Start();
             NativeMethods.PreventSleep();
             PlayingStatus = PlayingStatusEnum.Playing;
-            SizeChangeDetectorGrid.Visibility = System.Windows.Visibility.Visible;
+            SizeChangeDetectorGrid.Visibility = Visibility.Visible;
             ToolTipService.SetToolTip(PlayStopButton, "Stop capture");
             PlayStopButton.Content = "\uE71A";
         }
@@ -135,12 +148,12 @@ namespace SoRaVAC.Views
             await mediaCapture.StopPreviewAsync();
             NativeMethods.AllowSleep();
             PlayingStatus = resultingPlayingStatus;
-            SizeChangeDetectorGrid.Visibility = System.Windows.Visibility.Hidden;
+            SizeChangeDetectorGrid.Visibility = Visibility.Hidden;
             ToolTipService.SetToolTip(PlayStopButton, "Start capture");
             PlayStopButton.Content = "\uE768";
         }
 
-        private void SoundVolumeSlider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
+        private void SoundVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (sender is Slider slider)
             {
@@ -155,8 +168,19 @@ namespace SoRaVAC.Views
         private void OnMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
             // Using mouse wheel to update sound volume
+            handleMouseWheel(e.Delta);
+        }
+
+        private void CaptureElement_PointerWheelChanged(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            handleMouseWheel(e.GetCurrentPoint(null).Properties.MouseWheelDelta);
+        }
+
+        private void handleMouseWheel(int delta)
+        {
+            // Using mouse wheel to update sound volume
             int roundedValue = (int)Math.Round(SoundVolume);
-            if (e.Delta > 0 && roundedValue < 100)
+            if (delta > 0 && roundedValue < 100)
             {
                 SoundVolume = roundedValue + 1;
             }
@@ -166,7 +190,7 @@ namespace SoRaVAC.Views
             }
         }
 
-        private void SizeChangeDetectorGrid_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+        private void SizeChangeDetectorGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (CaptureElementXamlHost != null)
             {
@@ -229,7 +253,6 @@ namespace SoRaVAC.Views
                 PhotoCaptureSource = PhotoCaptureSource.VideoPreview
             };
         }
-
         private async Task InitVideoCapture(MediaCaptureInitializationSettings captureInitSettings)
         {
             DisplayRequest displayRequest = new DisplayRequest();
@@ -239,8 +262,15 @@ namespace SoRaVAC.Views
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
             
             Windows.UI.Xaml.Controls.CaptureElement captureElement = (Windows.UI.Xaml.Controls.CaptureElement)CaptureElementXamlHost.Child;
+            if (!_IsPointerWheelChangedSuscribed)
+            {
+                captureElement.PointerWheelChanged += CaptureElement_PointerWheelChanged;
+                _IsPointerWheelChangedSuscribed = true;
+            }
+
             captureElement.Source = mediaCapture;
         }
+
         private async Task InitAudioCapture()
         {
             AudioGraphSettings settings = new AudioGraphSettings(AudioRenderCategory.Media)
@@ -303,6 +333,30 @@ namespace SoRaVAC.Views
                 //_ = EnumerateVideoAndAudioDevices();
                 // Reset UI
             });
+        }
+
+        public void EnterFullScreenMode()
+        {            
+            // activating full screen mode to prevent side effects
+            IsFullScreenMode = true;
+
+            PageTitle.Visibility = Visibility.Collapsed;
+            CommandPanel.Visibility = Visibility.Collapsed;
+            PageContent.Margin = new Thickness(0);
+        }
+
+        public void ExitFullScreenMode()
+        {
+            PageTitle.Visibility = Visibility.Visible;
+            CommandPanel.Visibility = Visibility.Visible;
+
+            if (TryFindResource("MediumLeftRightMargin") is Thickness thickness)
+            {
+                PageContent.Margin = thickness;
+            }
+
+            // Deactivating full screen mode
+            IsFullScreenMode = false;
         }
     }
 

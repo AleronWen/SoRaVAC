@@ -18,13 +18,14 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Page.Resources>
     <ScrollViewer>
-        <Grid Margin="{StaticResource SmallTopBottomMargin}">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="48" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <TextBlock
                 Style="{StaticResource PageTitleStyle}"
+                Margin="{StaticResource PageTitleMargin}"
                 Text="{x:Static properties:Resources.SettingsPageTitle}" />
             <StackPanel
                 x:Name="ContentArea"
