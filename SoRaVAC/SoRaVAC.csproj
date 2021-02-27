@@ -9,7 +9,7 @@
     <AssetTargetFallback>uap10.0.18362</AssetTargetFallback>
     <StartupObject>SoRaVAC.Program</StartupObject>
     <ApplicationIcon>SoRaVAC_Square150x150Logo.scale-200.ico</ApplicationIcon>
-    <Version>0.9.0</Version>
+    <Version>0.9.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.1" />
