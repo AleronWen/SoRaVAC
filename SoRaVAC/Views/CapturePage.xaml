@@ -17,12 +17,12 @@
         <TextBlock
             x:Name="PageTitle"
             Style="{StaticResource PageTitleStyle}"
-            Margin="{StaticResource PageTitleMargin}"
+            Margin="{StaticResource SmallLeftTopRightBottomMargin}"
             Text="{x:Static properties:Resources.CapturePageTitle}" />
         <Grid
             x:Name="PageContent"
             Grid.Row="1"
-            Margin="{StaticResource MediumLeftRightMargin}">
+            Margin="{StaticResource SmallLeftRightMargin}">
             <!--
             The Mahapps Gray10 color represents where you should place your content.
             Place your content here.
