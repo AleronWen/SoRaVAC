@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,6 +12,7 @@ using MahApps.Metro.Controls;
 
 using SoRaVAC.Contracts.Services;
 using SoRaVAC.Contracts.Views;
+using SoRaVAC.Core.Services;
 
 namespace SoRaVAC.Views
 {
@@ -90,6 +92,11 @@ namespace SoRaVAC.Views
                     Width = MinWidth;
                     Height = MinHeight;
                 }
+            }
+
+            if (NewReleaseChecker.GetInstance().CheckForNewVerion(Assembly.GetEntryAssembly()))
+            {
+                OptionMenuItems.Insert(0, new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellNewVersionPage, Glyph = "\uE734", TargetPageType = typeof(SettingsPage) });
             }
 
             DataContext = this;

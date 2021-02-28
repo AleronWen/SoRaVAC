@@ -208,4 +208,13 @@ Ce logiciel permet, par exemple, d'afficher l'image de votre console de jeu sur 
   <data name="SettingsPageVolumeText" xml:space="preserve">
     <value>Volume</value>
   </data>
+  <data name="SettingsPageNewVersionTitle" xml:space="preserve">
+    <value>Nouvelle Version</value>
+  </data>
+  <data name="ShellNewVersionPage" xml:space="preserve">
+    <value>Nouvelle version disponible !</value>
+  </data>
+  <data name="SettingsPageNewVersionAvailableText" xml:space="preserve">
+    <value> est disponible sur GitHub :</value>
+  </data>
 </root>
