@@ -40,7 +40,7 @@
                 <TextBlock x:Name="SoundVolumeTextBlock" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Text="PH%" Width="50"/>
             </StackPanel>
 
-            <Grid x:Name="SizeChangeDetectorGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" SizeChanged="SizeChangeDetectorGrid_SizeChanged" Visibility="Hidden" Background="Black">
+            <Grid x:Name="SizeChangeDetectorGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" SizeChanged="SizeChangeDetectorGrid_SizeChanged" Visibility="Hidden">
                 <xamlhost:WindowsXamlHost x:Name="CaptureElementXamlHost" InitialTypeName="Windows.UI.Xaml.Controls.CaptureElement"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </Grid>
