@@ -25,12 +25,12 @@
             </Grid.RowDefinitions>
             <TextBlock
                 Style="{StaticResource PageTitleStyle}"
-                Margin="{StaticResource PageTitleMargin}"
+                Margin="{StaticResource SmallLeftTopRightBottomMargin}"
                 Text="{x:Static properties:Resources.SettingsPageTitle}" />
             <StackPanel
-                x:Name="ContentArea"
+                x:Name="PageContent"
                 Grid.Row="1"
-                Margin="{StaticResource MediumLeftRightMargin}">
+                Margin="{StaticResource SmallLeftRightMargin}">
 
                 <!-- New Version -->
                 <TextBlock

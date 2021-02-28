@@ -11,13 +11,13 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Windows.Devices.Enumeration;
 using Windows.Graphics.Display;
 using Windows.Media.Audio;
 using Windows.Media.Capture;
 using Windows.Media.Render;
 using Windows.System.Display;
-using Windows.UI.Xaml.Media;
 
 namespace SoRaVAC.Views
 {
@@ -335,25 +335,38 @@ namespace SoRaVAC.Views
             });
         }
 
+        private Brush SizeChangeDetectorGridBackgroundColor = null;
+        private Thickness PageContentMargin = new Thickness();
         public void EnterFullScreenMode()
         {            
             // activating full screen mode to prevent side effects
             IsFullScreenMode = true;
 
-            PageTitle.Visibility = Visibility.Collapsed;
-            CommandPanel.Visibility = Visibility.Collapsed;
+            // save some elements before modifying them
+            SizeChangeDetectorGridBackgroundColor = SizeChangeDetectorGrid.Background;
+            PageContentMargin = PageContent.Margin;
+
+            // modify elements
+            SizeChangeDetectorGrid.Background = new SolidColorBrush(Colors.Black);
             PageContent.Margin = new Thickness(0);
+
+            // update visibility
+            PageTitle.Visibility = Visibility.Collapsed;
+            CommandPanel.Visibility = Visibility.Collapsed;            
         }
 
         public void ExitFullScreenMode()
         {
+            // modify elements with saved values
+            if (SizeChangeDetectorGridBackgroundColor != null && PageContentMargin != null)
+            {
+                SizeChangeDetectorGrid.Background = SizeChangeDetectorGridBackgroundColor;
+                PageContent.Margin = PageContentMargin;
+            }
+
+            // restore visibility
             PageTitle.Visibility = Visibility.Visible;
             CommandPanel.Visibility = Visibility.Visible;
-
-            if (TryFindResource("MediumLeftRightMargin") is Thickness thickness)
-            {
-                PageContent.Margin = thickness;
-            }
 
             // Deactivating full screen mode
             IsFullScreenMode = false;

@@ -128,7 +128,7 @@
 Ce logiciel permet, par exemple, d'afficher l'image de votre console de jeu sur votre ordinateur en profitant son système de son plutot que celui de votre télévision ou moniteur (probablement de médiocre qualité).</value>
   </data>
   <data name="SettingsPageAboutTitle" xml:space="preserve">
-    <value>A Propos de cette application</value>
+    <value>A propos de cette application</value>
   </data>
   <data name="SettingsPageChooseThemeText" xml:space="preserve">
     <value>Choisir un theme</value>
@@ -182,7 +182,7 @@ Ce logiciel permet, par exemple, d'afficher l'image de votre console de jeu sur 
     <value>https://github.com/AleronWen/SoRaVAC</value>
   </data>
   <data name="SettingsPageCodeRepositoryText" xml:space="preserve">
-    <value>Le code source de SoRaVAC ainsi que l'outil de gestion de probème sont disponible sur GitHub</value>
+    <value>Le code source de SoRaVAC ainsi que l'outil de gestion de problème sont disponible sur GitHub</value>
   </data>
   <data name="SettingsPageLicenseLink" xml:space="preserve">
     <value>https://opensource.org/licenses/mit-license.php</value>
@@ -206,7 +206,7 @@ Ce logiciel permet, par exemple, d'afficher l'image de votre console de jeu sur 
     <value>Enregistrer</value>
   </data>
   <data name="SettingsPageVolumeText" xml:space="preserve">
-    <value>Volume</value>
+    <value>Volume par défaut</value>
   </data>
   <data name="SettingsPageNewVersionTitle" xml:space="preserve">
     <value>Nouvelle Version</value>
