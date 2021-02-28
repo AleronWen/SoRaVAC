@@ -90,6 +90,7 @@
             HamburgerButtonName="{x:Static properties:Resources.ShellHamburgerButtonName}"
             IsPaneOpen="True"
             DisplayMode="CompactInline"
+            OpenPaneLength="260"
             ItemsSource="{Binding MenuItems}"
             SelectedItem="{Binding SelectedMenuItem}"
             ItemClick="OnItemClick"

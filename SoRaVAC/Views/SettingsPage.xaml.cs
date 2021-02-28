@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 
 using SoRaVAC.Contracts.Services;
 using SoRaVAC.Contracts.Views;
+using SoRaVAC.Core.Models;
 using SoRaVAC.Helpers;
 using SoRaVAC.Models;
 using Windows.Devices.Enumeration;
@@ -63,6 +64,23 @@ namespace SoRaVAC.Views
                 Set(ref _preferedVideoSource, value);
             }
         }
+
+
+        private ReleaseInfo _releaseInfo;
+        public ReleaseInfo ReleaseInfo
+        {
+            get { return _releaseInfo; }
+            set { Set(ref _releaseInfo, value); }
+        }
+
+        private bool _displayNewVersion;
+        public bool DisplayNewVersion
+        {
+            get { return _displayNewVersion; }
+            set { Set(ref _displayNewVersion, value); }
+        }
+
+
         #endregion
 
         #region Audio Source properties
@@ -198,6 +216,9 @@ namespace SoRaVAC.Views
             PreferedAudioSourceIsMissing = true;
             PreferedAudioRendererIsMissing = true;
 
+            ReleaseInfo = Core.Services.NewReleaseChecker.GetInstance().ReleaseInfo;
+            DisplayNewVersion = ReleaseInfo != null;
+
             VideoSourceDeviceWatcherHelper = new DeviceWatcherHelper(VideoSourcesList, this.Dispatcher);
             AudioSourceDeviceWatcherHelper = new DeviceWatcherHelper(AudioSourcesList, Dispatcher);
             AudioRendererDeviceWatcherHelper = new DeviceWatcherHelper(AudioRenderersList, Dispatcher);
@@ -251,6 +272,9 @@ namespace SoRaVAC.Views
 
         private void CodeRepositoryLink_Click(object sender, RoutedEventArgs e)
         => _systemService.OpenInWebBrowser(Properties.Resources.SettingsPageCodeRepositoryLink);
+
+        private void NewReleaseLink_Click(object sender, RoutedEventArgs e)
+        => _systemService.OpenInWebBrowser(ReleaseInfo.Url);
 
         private void VideoDevicesListHandleChange(object sender, NotifyCollectionChangedEventArgs e)
         {

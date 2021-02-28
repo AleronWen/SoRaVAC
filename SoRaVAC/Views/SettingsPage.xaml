@@ -18,7 +18,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Page.Resources>
     <ScrollViewer>
-        <Grid>
+        <Grid Margin="{StaticResource MediumBottomMargin}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
@@ -32,7 +32,25 @@
                 Grid.Row="1"
                 Margin="{StaticResource MediumLeftRightMargin}">
 
-                <!-- Audio/Vodeo Settings-->
+                <!-- New Version -->
+                <TextBlock
+                    Margin="{StaticResource SmallTopMargin}"
+                    Style="{StaticResource SubtitleTextStyle}"
+                    Text="{x:Static properties:Resources.SettingsPageNewVersionTitle}"
+                    Visibility="{Binding DisplayNewVersion, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <StackPanel Orientation="Vertical" Margin="{StaticResource SmallTopBottomMargin}" Visibility="{Binding DisplayNewVersion, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource BodyTextStyle}" Text="{Binding ReleaseInfo.Name}"/>
+                        <TextBlock Style="{StaticResource BodyTextStyle}" Text="{x:Static properties:Resources.SettingsPageNewVersionAvailableText}"/>
+                    </StackPanel>
+                    <TextBlock Margin="{StaticResource SmallTopMargin}" >
+                        <Hyperlink x:Name="NewReleaseLink" Click="NewReleaseLink_Click">
+                            <TextBlock Style="{StaticResource BodyTextStyle}" Text="{Binding ReleaseInfo.Url}"/>
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+
+                <!-- Audio/Vodeo Settings -->
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"

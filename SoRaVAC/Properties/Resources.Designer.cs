@@ -179,6 +179,24 @@ namespace SoRaVAC.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à  is available on GitHub:.
+        /// </summary>
+        public static string SettingsPageNewVersionAvailableText {
+            get {
+                return ResourceManager.GetString("SettingsPageNewVersionAvailableText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à New Version.
+        /// </summary>
+        public static string SettingsPageNewVersionTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageNewVersionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à No prefered device is registred..
         /// </summary>
         public static string SettingsPageNoRegistredPreferedDeviceText {
@@ -319,6 +337,15 @@ namespace SoRaVAC.Properties {
         public static string ShellHamburgerButtonName {
             get {
                 return ResourceManager.GetString("ShellHamburgerButtonName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à New Version Available !.
+        /// </summary>
+        public static string ShellNewVersionPage {
+            get {
+                return ResourceManager.GetString("ShellNewVersionPage", resourceCulture);
             }
         }
         
