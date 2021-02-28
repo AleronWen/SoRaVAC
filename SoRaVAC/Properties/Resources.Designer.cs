@@ -88,7 +88,7 @@ namespace SoRaVAC.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Some Random Video Capture Adapater displays the audio/video stream captured by a capture device (not delivered with this software) like an internal capture card or an USB capture adapter.
+        ///   Recherche une chaîne localisée semblable à Some Random Video Adapater Capture displays the audio/video stream captured by a capture device (not delivered with this software) like an internal capture card or an USB capture adapter.
         ///This software permits to display your video game console on your computer&apos;s screen. It uses your computer sound system instead of the one from your TV or computer screen (which may be crappy)..
         /// </summary>
         public static string SettingsPageAboutText {
@@ -305,7 +305,7 @@ namespace SoRaVAC.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Volume.
+        ///   Recherche une chaîne localisée semblable à Default Volume.
         /// </summary>
         public static string SettingsPageVolumeText {
             get {
