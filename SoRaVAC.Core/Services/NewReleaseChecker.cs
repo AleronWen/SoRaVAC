@@ -15,7 +15,7 @@ namespace SoRaVAC.Core.Services
         private static NewReleaseChecker _instance = null;
 
         private bool alreadyChecked;
-        private ReleaseInfo ReleaseInfo;
+        public ReleaseInfo ReleaseInfo { get; private set; }
 
         private NewReleaseChecker()
         { 
