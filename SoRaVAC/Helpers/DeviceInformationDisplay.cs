@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -8,12 +9,12 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace SoRaVAC.Helpers
 {
-    public class DeviceInformationDisplay : INotifyPropertyChanged
+    internal class DeviceInformationDisplay : INotifyPropertyChanged
     {
         public DeviceInformationDisplay(DeviceInformation deviceInfoIn)
         {
             this.DeviceInformation = deviceInfoIn;
-            //UpdateGlyphBitmapImage();
+            UpdateGlyphBitmapImage();
         }
 
         public static async Task<DeviceInformationDisplay> GetDeviceFromIdAsync(string deviceId)
@@ -43,7 +44,7 @@ namespace SoRaVAC.Helpers
             OnPropertyChanged("IsPaired");
             OnPropertyChanged("GetPropertyForDisplay");
 
-            //UpdateGlyphBitmapImage();
+            UpdateGlyphBitmapImage();
         }
 
         public string GetPropertyForDisplay(string key) => Properties[key]?.ToString();

@@ -1,8 +1,10 @@
 ﻿using SoRaVAC.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Windows;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace SoRaVAC.Helpers
 {
@@ -19,9 +21,9 @@ namespace SoRaVAC.Helpers
 
         public static double LoadSoundVolume()
         {
-            if (Application.Current.Properties.Contains(SOUND_VOLUME))
+            string soundVolumeStr = Task.Run(() => ApplicationData.Current.LocalSettings.ReadAsync<string>(SOUND_VOLUME)).Result;
+            if (soundVolumeStr != null)
             {
-                string soundVolumeStr = Application.Current.Properties[SOUND_VOLUME].ToString();
                 if (double.TryParse(soundVolumeStr, out double soundVolume))
                 {
                     return soundVolume;
@@ -30,9 +32,9 @@ namespace SoRaVAC.Helpers
             return VOLUME_MAX;
         }
 
-        public static void SaveSoundVolume(double value)
+        public static async Task SaveSoundVolumeAsync(double value)
         {
-            Application.Current.Properties[SOUND_VOLUME] = value.ToString();
+            await ApplicationData.Current.LocalSettings.SaveAsync<string>(SOUND_VOLUME, value.ToString());
         }
 
         public static PreferedDeviceInformation LoadPreferedVideoSource()
@@ -54,35 +56,33 @@ namespace SoRaVAC.Helpers
         {
             PreferedDeviceInformation preferedDevice = null;
 
-            if (Application.Current.Properties.Contains(keyId) && Application.Current.Properties.Contains(keyName))
+            string id = Task.Run(() => ApplicationData.Current.LocalSettings.ReadAsync<string>(keyId)).Result;
+            string name = Task.Run(() => ApplicationData.Current.LocalSettings.ReadAsync<string>(keyName)).Result;
+
+            if (id != null && name != null)
             {
-                string id = Application.Current.Properties[keyId].ToString();
-                string name = Application.Current.Properties[keyName].ToString();
-                if (id != null && name != null)
-                {
-                    preferedDevice = new PreferedDeviceInformation(id, name);
-                }
+                preferedDevice = new PreferedDeviceInformation(id, name);
             }
 
             return preferedDevice;
         }
 
-        public static void SavePreferedVideoSource(PreferedDeviceInformation preferedDeviceInformation)
+        public static async void SavePreferedVideoSource(PreferedDeviceInformation preferedDeviceInformation)
         {
-            Application.Current.Properties[VIDEO_SOURCE_ID] = preferedDeviceInformation.Id;
-            Application.Current.Properties[VIDEO_SOURCE_NAME] = preferedDeviceInformation.Name;
+            await ApplicationData.Current.LocalSettings.SaveAsync<string>(VIDEO_SOURCE_ID, preferedDeviceInformation.Id);
+            await ApplicationData.Current.LocalSettings.SaveAsync<string>(VIDEO_SOURCE_NAME, preferedDeviceInformation.Name);
         }
 
-        public static void SavePreferedAudioSource(PreferedDeviceInformation preferedDeviceInformation)
+        public static async void SavePreferedAudioSource(PreferedDeviceInformation preferedDeviceInformation)
         {
-            Application.Current.Properties[AUDIO_SOURCE_ID] = preferedDeviceInformation.Id;
-            Application.Current.Properties[AUDIO_SOURCE_NAME] = preferedDeviceInformation.Name;
+            await ApplicationData.Current.LocalSettings.SaveAsync<string>(AUDIO_SOURCE_ID, preferedDeviceInformation.Id);
+            await ApplicationData.Current.LocalSettings.SaveAsync<string>(AUDIO_SOURCE_NAME, preferedDeviceInformation.Name);
         }
 
-        public static void SavePreferedAudioRenderer(PreferedDeviceInformation preferedDeviceInformation)
+        public static async void SavePreferedAudioRenderer(PreferedDeviceInformation preferedDeviceInformation)
         {
-            Application.Current.Properties[AUDIO_RENDERER_ID] = preferedDeviceInformation.Id;
-            Application.Current.Properties[AUDIO_RENDERER_NAME] = preferedDeviceInformation.Name;
+            await ApplicationData.Current.LocalSettings.SaveAsync<string>(AUDIO_RENDERER_ID, preferedDeviceInformation.Id);
+            await ApplicationData.Current.LocalSettings.SaveAsync<string>(AUDIO_RENDERER_NAME, preferedDeviceInformation.Name);
         }
     }
 }

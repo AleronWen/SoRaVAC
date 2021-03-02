@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
-using System.Windows.Threading;
+using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
+using Windows.UI.Core;
 
 namespace SoRaVAC.Helpers
 {
-    class DeviceWatcherHelper
+    internal class DeviceWatcherHelper
     {
         public DeviceWatcherHelper(
             ObservableCollection<DeviceInformationDisplay> resultCollection,
-            Dispatcher dispatcher)
+            CoreDispatcher dispatcher)
         {
             this.resultCollection = resultCollection;
             this.dispatcher = dispatcher;
@@ -64,7 +66,7 @@ namespace SoRaVAC.Helpers
 
         DeviceWatcher deviceWatcher = null;
         ObservableCollection<DeviceInformationDisplay> resultCollection;
-        Dispatcher dispatcher;
+        CoreDispatcher dispatcher;
 
         static bool IsWatcherStarted(DeviceWatcher watcher)
         {
@@ -88,7 +90,7 @@ namespace SoRaVAC.Helpers
         private async void Watcher_DeviceAdded(DeviceWatcher sender, DeviceInformation deviceInfo)
         {
             // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
-            await dispatcher.InvokeAsync(() =>
+            await dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
             {
                 // Watcher may have stopped while we were waiting for our chance to run.
                 if (IsWatcherStarted(sender))
@@ -102,7 +104,7 @@ namespace SoRaVAC.Helpers
         private async void Watcher_DeviceUpdated(DeviceWatcher sender, DeviceInformationUpdate deviceInfoUpdate)
         {
             // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
-            await dispatcher.InvokeAsync(() =>
+            await dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
             {
                 // Watcher may have stopped while we were waiting for our chance to run.
                 if (IsWatcherStarted(sender))
@@ -126,7 +128,7 @@ namespace SoRaVAC.Helpers
         private async void Watcher_DeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate deviceInfoUpdate)
         {
             // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
-            await dispatcher.InvokeAsync(() =>
+            await dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
             {
                 // Watcher may have stopped while we were waiting for our chance to run.
                 if (IsWatcherStarted(sender))
@@ -148,7 +150,7 @@ namespace SoRaVAC.Helpers
 
         private async void Watcher_EnumerationCompleted(DeviceWatcher sender, object obj)
         {
-            await dispatcher.InvokeAsync(() =>
+            await dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
             {
                 RaiseDeviceChanged(sender, string.Empty);
             });
@@ -156,7 +158,7 @@ namespace SoRaVAC.Helpers
 
         private async void Watcher_Stopped(DeviceWatcher sender, object obj)
         {
-            await dispatcher.InvokeAsync(() =>
+            await dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
             {
                 RaiseDeviceChanged(sender, string.Empty);
             });

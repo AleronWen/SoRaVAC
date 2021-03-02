@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 
 namespace SoRaVAC.Models
 {
-    public class PreferedDeviceInformation
+    class PreferedDeviceInformation
     {
         public PreferedDeviceInformation(DeviceInformation deviceInformation)
         {
