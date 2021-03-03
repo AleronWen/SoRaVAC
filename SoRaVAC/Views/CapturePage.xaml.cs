@@ -17,6 +17,7 @@ using Windows.System.Display;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -79,6 +80,24 @@ namespace SoRaVAC.Views
             VideoSource = AudioVideoSettingsStorageHelper.LoadPreferedVideoSource();
             AudioSource = AudioVideoSettingsStorageHelper.LoadPreferedAudioSource();
             AudioRenderer = AudioVideoSettingsStorageHelper.LoadPreferedAudioRenderer();
+
+            Window.Current.VisibilityChanged += Current_VisibilityChangedAsync;
+        }
+
+        private void Current_VisibilityChangedAsync(object sender, VisibilityChangedEventArgs e)
+        {
+            if (ApplicationView.GetForCurrentView().IsFullScreenMode)
+            {
+                if (PlayingStatus == PlayingStatusEnum.Playing)
+                {
+                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await StopCaptureAsync(PlayingStatusEnum.Paused));
+                    PlayingStatus = PlayingStatusEnum.Paused;
+                }
+                else if (PlayingStatus == PlayingStatusEnum.Paused)
+                {
+                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await StartCaptureAsync());
+                }
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
