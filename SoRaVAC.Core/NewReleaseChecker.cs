@@ -15,13 +15,13 @@ namespace SoRaVAC.Core
 
         private bool alreadyChecked;
         public Release LastRelease { get; private set; }
-        public Release LastPreRelease { get; private set; }
+        //public Release LastPreRelease { get; private set; }
 
         private NewReleaseChecker()
         {
             alreadyChecked = false;
             LastRelease = null;
-            LastPreRelease = null;
+            //LastPreRelease = null;
         }
 
         public static NewReleaseChecker GetInstance()
@@ -50,6 +50,7 @@ namespace SoRaVAC.Core
                     if (localReleaseVersion.CompareTo(releaseVerion) < 0)
                     {
                         // The release on GitHub is newer than than the local release
+                        /*
                         if (LastPreRelease == null && release.Prerelease)
                         {
                             LastPreRelease = release;
@@ -58,10 +59,13 @@ namespace SoRaVAC.Core
                         {
                             LastRelease = release;
                         }
+                        */
+                        LastRelease = release;
+                        break;
                     }
 
                     // if we found the two latest releases we exit the loop
-                    if (LastRelease != null && LastPreRelease != null) break;
+                    // if (LastRelease != null && LastPreRelease != null) break;
                 }
 
                 alreadyChecked = true;

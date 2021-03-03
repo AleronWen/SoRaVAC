@@ -14,7 +14,8 @@
 
     <winui:NavigationView
         x:Name="navigationView"
-        IsBackButtonVisible="Visible"
+        IsBackButtonVisible="Collapsed"
+        AlwaysShowHeader="True"
         IsBackEnabled="{x:Bind IsBackEnabled, Mode=OneWay}"
         SelectedItem="{x:Bind Selected, Mode=OneWay}"
         ItemInvoked="OnItemInvoked"
@@ -27,8 +28,12 @@
             Or to use an IconElement instead of a Symbol see https://github.com/Microsoft/WindowsTemplateStudio/blob/release/docs/UWP/projectTypes/navigationpane.md
             Edit String/en-US/Resources.resw: Add a menu item title for each page
             -->
-            <winui:NavigationViewItem x:Uid="Shell_Main" Icon="Document" helpers:NavHelper.NavigateTo="views:MainPage" />
+            <winui:NavigationViewItem x:Uid="Shell_Main" Icon="SlideShow" helpers:NavHelper.NavigateTo="views:CapturePage" />
         </winui:NavigationView.MenuItems>
+        <winui:NavigationView.FooterMenuItems>
+            <winui:NavigationViewItem x:Uid="Shell_NewVersionAvailable" Icon="OutlineStar" helpers:NavHelper.NavigateTo="views:SettingsPage" Visibility="{x:Bind IsNewReleaseAvailable}" />
+        </winui:NavigationView.FooterMenuItems>
+        <!--
         <i:Interaction.Behaviors>
             <behaviors:NavigationViewHeaderBehavior
                 DefaultHeader="{x:Bind Selected.Content, Mode=OneWay}">
@@ -44,6 +49,7 @@
                 </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
             </behaviors:NavigationViewHeaderBehavior>
         </i:Interaction.Behaviors>
+        -->
         <Grid>
             <Frame x:Name="shellFrame" />
         </Grid>

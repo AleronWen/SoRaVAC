@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace SoRaVAC.Helpers
 {
-    internal class DeviceInformationDisplay : INotifyPropertyChanged
+    public class DeviceInformationDisplay : INotifyPropertyChanged
     {
         public DeviceInformationDisplay(DeviceInformation deviceInfoIn)
         {

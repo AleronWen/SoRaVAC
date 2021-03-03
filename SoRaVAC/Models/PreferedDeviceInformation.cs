@@ -7,7 +7,7 @@ using Windows.Devices.Enumeration;
 
 namespace SoRaVAC.Models
 {
-    class PreferedDeviceInformation
+    public class PreferedDeviceInformation
     {
         public PreferedDeviceInformation(DeviceInformation deviceInformation)
         {

@@ -46,7 +46,7 @@ namespace SoRaVAC
 
         private ActivationService CreateActivationService()
         {
-            return new ActivationService(this, typeof(Views.MainPage), new Lazy<UIElement>(CreateShell));
+            return new ActivationService(this, typeof(Views.CapturePage), new Lazy<UIElement>(CreateShell));
         }
 
         private UIElement CreateShell()

@@ -10,7 +10,7 @@
   <Identity
     Name="F866E48A-B92E-44E2-87F8-784658183923"
     Publisher="CN=Aleron Wen"
-    Version="0.10.0.0" />
+    Version="0.9.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="F866E48A-B92E-44E2-87F8-784658183923" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

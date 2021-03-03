@@ -9,60 +9,138 @@
     xmlns:xaml="using:Windows.UI.Xaml"
     mc:Ignorable="d">
     <Page.Resources>
+        <DataTemplate x:Key="DeviceInformationDisplayTemplate" x:DataType="helper:DeviceInformationDisplay">
+            <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
         <helper:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="ElementTheme" />
     </Page.Resources>
-    <Grid Margin="{StaticResource MediumLeftRightMargin}">
-        <StackPanel
-            x:Name="ContentArea">
-            <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                <TextBlock x:Uid="Settings_Theme" />
+    <ScrollViewer>
+        <Grid Margin="{StaticResource MediumLeftRightBottomMargin}">
+            <StackPanel x:Name="ContentArea">
+
+                <!-- New Version -->
+                <StackPanel Visibility="{x:Bind IsNewReleaseAvailable, Mode=OneWay}">
+                    <TextBlock x:Uid="Settings_NewVersionTitle" Margin="{StaticResource SmallTopMargin}" Style="{ThemeResource SubtitleTextBlockStyle}" Text="Placeholder Subtitle"/>
+                    <StackPanel Orientation="Vertical" Margin="{StaticResource SmallTopBottomMargin}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BodyTextStyle}" Text="{x:Bind NewRelease.Name}"/>
+                            <TextBlock x:Uid="Settings_NewVersionAvailableAt" Style="{StaticResource BodyTextStyle}" Text="Placeholder text"/>
+                        </StackPanel>
+                        <HyperlinkButton Margin="{StaticResource XSmallTopMargin}" NavigateUri="{x:Bind NewRelease.HtmlUrl}" Content="{x:Bind NewRelease.HtmlUrl}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Audio/Vodeo Settings -->
+                <TextBlock
+                    Margin="{StaticResource SmallTopMargin}"
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                    x:Uid="Settings_AudioVideoTitle" Text="Placeholder Subtitle"/>
+                <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+                    <!-- Video Source -->
+                    <TextBlock Margin="{StaticResource XXSmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_VideoSourceText" Text="Placeholder text"/>
+                    <StackPanel Orientation="Vertical" Margin="{StaticResource XSmallTopBottomMargin}">
+                        <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallBottomMargin}">
+                            <ComboBox Width="400" ItemsSource="{x:Bind VideoSourcesList}" ItemTemplate="{StaticResource DeviceInformationDisplayTemplate}" SelectedItem="{x:Bind SelectedVideoSource, Mode=TwoWay}" VerticalAlignment="Center"/>
+                            <Button x:Name="VideoSourceSetPreferedButton" Margin="{StaticResource SmallLeftMargin}" x:Uid="Settings_RegisterPreferedButtonText" Click="VideoSourceSetPreferedButton_Click" VerticalAlignment="Center" Content="BtnPH"/>
+                            <TextBlock x:Name="VideoSourceSetPreferedDevice" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_NoRegistredPreferedDeviceText" Text="Placeholder text"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Visibility="{x:Bind PreferedVideoSourceIsMissing, Mode=OneWay}">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="{StaticResource MediumFontSize}" Text="&#xE7BA;" VerticalAlignment="Center"/>
+                            <TextBlock Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_PreferedVideoSourceDeviceMissingText" Text="Placeholder text"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <!-- Audio Source -->
+                    <TextBlock Margin="{StaticResource XXSmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_AudioSourceText" Text="Placeholder text"/>
+                    <StackPanel Orientation="Vertical" Margin="{StaticResource XSmallTopBottomMargin}">
+                        <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallBottomMargin}">
+                            <ComboBox Width="400" ItemsSource="{x:Bind AudioSourcesList}" ItemTemplate="{StaticResource DeviceInformationDisplayTemplate}" SelectedItem="{x:Bind SelectedAudioSource, Mode=TwoWay}" VerticalAlignment="Center"/>
+                            <Button x:Name="AudioSourceSetPreferedButton" Margin="{StaticResource SmallLeftMargin}" x:Uid="Settings_RegisterPreferedButtonText" Click="AudioSourceSetPreferedButton_Click" VerticalAlignment="Center" Content="BtnPH"/>
+                            <TextBlock x:Name="AudioSourceSetPreferedDevice" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_NoRegistredPreferedDeviceText" Text="Placeholder text"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Visibility="{x:Bind PreferedAudioSourceIsMissing, Mode=OneWay}">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="{StaticResource MediumFontSize}" Text="&#xE7BA;" VerticalAlignment="Center"/>
+                            <TextBlock Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_PreferedAudioSourceDeviceMissingText" Text="Placeholder text"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <!-- Audio Renderer -->
+                    <TextBlock Margin="{StaticResource XXSmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_AudioRendererText" Text="Placeholder text"/>
+                    <StackPanel Orientation="Vertical" Margin="{StaticResource XSmallTopBottomMargin}">
+                        <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallBottomMargin}">
+                            <ComboBox Width="400" ItemsSource="{x:Bind AudioRenderersList}" ItemTemplate="{StaticResource DeviceInformationDisplayTemplate}" SelectedItem="{x:Bind SelectedAudioRenderer, Mode=TwoWay}" VerticalAlignment="Center"/>
+                            <Button x:Name="AudioRendererSetPreferedButton" Margin="{StaticResource SmallLeftMargin}" x:Uid="Settings_RegisterPreferedButtonText" Click="AudioRendererSetPreferedButton_Click" VerticalAlignment="Center" Content="BtnPH"/>
+                            <TextBlock x:Name="AudioRendererSetPreferedDevice" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_NoRegistredPreferedDeviceText" Text="Placeholder text"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Visibility="{x:Bind PreferedAudioRendererIsMissing, Mode=OneWay}">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="{StaticResource MediumFontSize}" Text="&#xE7BA;" VerticalAlignment="Center"/>
+                            <TextBlock Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_PreferedAudioRendererDeviceMissingText" Text="Placeholder text"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <!-- Volume -->
+                    <TextBlock Margin="{StaticResource XXSmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_VolumeText" Text="Placeholder text"/>
+                    <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallTopBottomMargin}">
+                        <Slider x:Name="SoundVolumeSlier" Width="400" Minimum="0" Maximum="100" TickFrequency="5" TickPlacement="TopLeft" VerticalAlignment="Center"
+                                Value="{x:Bind SoundVolume, Mode=TwoWay}" ValueChanged="SoundVolumeSlier_ValueChanged"/>
+                        <TextBlock x:Name="SoundVolumeTextBlock" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" Text="PH%" Width="50"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- UI Personalization -->
+                <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" Text="Placeholder Subtitle"/>
+                <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+                    <TextBlock x:Uid="Settings_Theme" Text="Placeholder Text"/>
+
+                    <StackPanel Margin="{StaticResource XSmallTopMargin}">
+                        <RadioButton 
+                            x:Uid="Settings_Theme_Light"
+                            Checked="ThemeChanged_CheckedAsync" 
+                            IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
+                            FontSize="15"
+                            GroupName="AppTheme"
+                            Content="Placeholder Text">
+                            <RadioButton.CommandParameter>
+                                <xaml:ElementTheme>Light</xaml:ElementTheme>
+                            </RadioButton.CommandParameter> 
+                        </RadioButton>
+                        <RadioButton 
+                            x:Uid="Settings_Theme_Dark"
+                            Checked="ThemeChanged_CheckedAsync" 
+                            IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}"
+                            FontSize="15"
+                            GroupName="AppTheme"
+                            Content="Placeholder Text">
+                            <RadioButton.CommandParameter>
+                                <xaml:ElementTheme>Dark</xaml:ElementTheme>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton 
+                            x:Uid="Settings_Theme_Default"
+                            Checked="ThemeChanged_CheckedAsync"
+                            IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}"
+                            FontSize="15"
+                            GroupName="AppTheme"
+                            Content="Placeholder Text">
+                            <RadioButton.CommandParameter>
+                                <xaml:ElementTheme>Default</xaml:ElementTheme>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" Text="Placeholder Subtitle"/>
 
                 <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <RadioButton 
-                        x:Uid="Settings_Theme_Light"
-                        Checked="ThemeChanged_CheckedAsync" 
-                        IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme" >
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Light</xaml:ElementTheme>
-                        </RadioButton.CommandParameter> 
-                    </RadioButton>
-                    <RadioButton 
-                        x:Uid="Settings_Theme_Dark"
-                        Checked="ThemeChanged_CheckedAsync" 
-                        IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Dark</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                    <RadioButton 
-                        x:Uid="Settings_Theme_Default"
-                        Checked="ThemeChanged_CheckedAsync"
-                        IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Default</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
+                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind VersionDescription, Mode=OneWay}" />
+                    <TextBlock
+                        x:Uid="Settings_AboutDescription"
+                        Margin="{StaticResource XSmallTopMargin}"
+                        Style="{ThemeResource BodyTextBlockStyle}"
+                        Text="Placeholder Text"/>
+
+                    <HyperlinkButton x:Uid="Settings_PrivacyTermsLink" Margin="{StaticResource XSmallTopMargin}" Content="Placeholder Link"/>
+                    <HyperlinkButton x:Uid="Settings_LicenseLink" Margin="{StaticResource XSmallTopMargin}" Content="Placeholder Link"/>
+                    <HyperlinkButton x:Uid="Settings_CodeRepositoryLink" Margin="{StaticResource XSmallTopMargin}" Content="Placeholder Link"/>
                 </StackPanel>
             </StackPanel>
-
-            <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" />
-
-            <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind VersionDescription, Mode=OneWay}" />
-                <TextBlock
-                    x:Uid="Settings_AboutDescription"
-                    Margin="{StaticResource XSmallTopMargin}"
-                    Style="{ThemeResource BodyTextBlockStyle}" />
-
-                <HyperlinkButton x:Uid="Settings_PrivacyTermsLink" Margin="{StaticResource XSmallTopMargin}" />
-            </StackPanel>
-        </StackPanel>
-    </Grid>
+        </Grid>
+    </ScrollViewer>
 </Page>

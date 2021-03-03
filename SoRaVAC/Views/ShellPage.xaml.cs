@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-
+using SoRaVAC.Core;
 using SoRaVAC.Helpers;
 using SoRaVAC.Services;
 using SoRaVAC.Views.Contracts;
 using Windows.System;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -25,6 +28,7 @@ namespace SoRaVAC.Views
         private readonly KeyboardAccelerator _backKeyboardAccelerator = BuildKeyboardAccelerator(VirtualKey.GoBack);
 
         private bool _isBackEnabled;
+        private bool _isNewReleaseAvailable;
         private WinUI.NavigationViewItem _selected;
 
         public bool IsBackEnabled
@@ -39,6 +43,13 @@ namespace SoRaVAC.Views
             set { Set(ref _selected, value); }
         }
 
+        public bool IsNewReleaseAvailable
+        {
+            get { return _isNewReleaseAvailable; }
+            set { Set(ref _isNewReleaseAvailable, value); }
+        }
+
+
         public ShellPage()
         {
             InitializeComponent();
@@ -52,6 +63,32 @@ namespace SoRaVAC.Views
             NavigationService.NavigationFailed += Frame_NavigationFailed;
             NavigationService.Navigated += Frame_Navigated;
             navigationView.BackRequested += OnBackRequested;
+
+            Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
+
+            IsNewReleaseAvailable = NewReleaseChecker.GetInstance().CheckForNewRelease(Assembly.GetEntryAssembly());
+        }
+
+        private void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs e)
+        {
+            if (e.VirtualKey == VirtualKey.Escape)
+            {
+                if (ApplicationView.GetForCurrentView().IsFullScreenMode)
+                {
+                    ExitFullScreenMode();
+                }
+            }
+            else if (e.VirtualKey == VirtualKey.F11)
+            {
+                if (Dispatcher.HasThreadAccess)
+                {
+                    HandleFullScreenMode();
+                }
+                else
+                {
+                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => HandleFullScreenMode());
+                }
+            }
         }
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
@@ -70,10 +107,12 @@ namespace SoRaVAC.Views
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
-            IsBackEnabled = NavigationService.CanGoBack;
+            //IsBackEnabled = NavigationService.CanGoBack;
+            IsBackEnabled = false;
             if (e.SourcePageType == typeof(SettingsPage))
             {
                 Selected = navigationView.SettingsItem as WinUI.NavigationViewItem;
+                navigationView.Header = Selected.Content;
                 return;
             }
 
@@ -81,6 +120,7 @@ namespace SoRaVAC.Views
             if (selectedItem != null)
             {
                 Selected = selectedItem;
+                navigationView.Header = Selected.Content;
             }
         }
 
@@ -160,14 +200,44 @@ namespace SoRaVAC.Views
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        private void HandleFullScreenMode()
+        {
+            if (ApplicationView.GetForCurrentView().IsFullScreenMode)
+            {
+                ExitFullScreenMode();
+            }
+            else
+            {
+                EnterFullScreenMode();
+            }
+        }
+
         public void EnterFullScreenMode()
         {
-            throw new NotImplementedException();
+            if (NavigationService.Frame.Content is IFullScreenMode page)
+            {
+                var view = ApplicationView.GetForCurrentView();
+
+                // activate full screen mode
+                if (view.TryEnterFullScreenMode())
+                {
+                    navigationView.IsPaneVisible = false;
+                    navigationView.AlwaysShowHeader = false;
+                    page.EnterFullScreenMode();
+                }
+            }
         }
 
         public void ExitFullScreenMode()
         {
-            throw new NotImplementedException();
+            if (NavigationService.Frame.Content is IFullScreenMode page)
+            {
+                // deactivate full screen mode
+                navigationView.IsPaneVisible = true;
+                navigationView.AlwaysShowHeader = true;
+                page.ExitFullScreenMode();
+                ApplicationView.GetForCurrentView().ExitFullScreenMode();
+            }
         }
     }
 }

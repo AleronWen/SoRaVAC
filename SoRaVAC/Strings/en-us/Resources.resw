@@ -126,8 +126,8 @@
     <comment>Application description</comment>
   </data>
   <data name="Shell_Main.Content" xml:space="preserve">
-    <value>Main</value>
-    <comment>Navigation view item name for Main</comment>
+    <value>Capture</value>
+    <comment>Navigation view item name for Capture</comment>
   </data>
   <data name="Settings_Theme.Text" xml:space="preserve">
     <value>Choose Theme</value>
@@ -145,24 +145,79 @@
     <value>Light</value>
     <comment>Light theme text for Settings</comment>
   </data>
-  <data name="Settings_About.Text" xml:space="preserve">    
+  <data name="Settings_About.Text" xml:space="preserve">
     <value>About this application</value>
     <comment>About this application title for Settings</comment>
   </data>
-  <data name="Settings_AboutDescription.Text" xml:space="preserve">    
-    <value>Settings page placeholder text.  Your app description goes here.</value>
+  <data name="Settings_AboutDescription.Text" xml:space="preserve">
+    <value>Some Random Video Adapater Capture displays the audio/video stream captured by a capture device (not delivered with this software) like an internal capture card or an USB capture adapter.
+This software permits to display your video game console on your computer's screen. It uses your computer sound system instead of the one from your TV or computer screen (which may be crappy).</value>
     <comment>About this application description for Settings</comment>
   </data>
-  <data name="Settings_PrivacyTermsLink.Content" xml:space="preserve">    
+  <data name="Settings_PrivacyTermsLink.Content" xml:space="preserve">
     <value>Privacy Statement</value>
     <comment>Privacy Statement link content for Settings</comment>
   </data>
-  <data name="Settings_PrivacyTermsLink.NavigateUri" xml:space="preserve">  
-    <value>https://YourPrivacyUrlGoesHere/</value>
+  <data name="Settings_PrivacyTermsLink.NavigateUri" xml:space="preserve">
+    <value>https://www.myapppolicy.com/app/SoRaVAC</value>
     <comment>Here is your Privacy Statement url for Settings</comment>
   </data>
-  <data name="Settings_Personalization.Text" xml:space="preserve">   
+  <data name="Settings_Personalization.Text" xml:space="preserve">
     <value>Personalization</value>
     <comment>Personalization text for Settings</comment>
+  </data>
+  <data name="Capture_VolumeText" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="Settings_AudioRendererText.Text" xml:space="preserve">
+    <value>Audio Renderer</value>
+  </data>
+  <data name="Settings_AudioSourceText.Text" xml:space="preserve">
+    <value>Audio Source</value>
+  </data>
+  <data name="Settings_AudioVideoTitle.Text" xml:space="preserve">
+    <value>Audio and Video</value>
+  </data>
+  <data name="Settings_CodeRepositoryLink.Content" xml:space="preserve">
+    <value>SoRaVAC source code and issue management are on GitHub</value>
+  </data>
+  <data name="Settings_CodeRepositoryLink.NavigateUri" xml:space="preserve">
+    <value>https://github.com/AleronWen/SoRaVAC</value>
+  </data>
+  <data name="Settings_LicenseLink.Content" xml:space="preserve">
+    <value>SoRaVAC is released under MIT LICENSE</value>
+  </data>
+  <data name="Settings_LicenseLink.NavigateUri" xml:space="preserve">
+    <value>https://opensource.org/licenses/mit-license.php</value>
+  </data>
+  <data name="Settings_NewVersionAvailableAt.Text" xml:space="preserve">
+    <value> is available on GitHub:</value>
+  </data>
+  <data name="Settings_NewVersionTitle.Text" xml:space="preserve">
+    <value>New Version</value>
+  </data>
+  <data name="Settings_NoRegistredPreferedDeviceText.Text" xml:space="preserve">
+    <value>No prefered device is registred.</value>
+  </data>
+  <data name="Settings_PreferedAudioRendererDeviceMissingText.Text" xml:space="preserve">
+    <value>Prefered audio renderer is not present. Plug the device or choose another one.</value>
+  </data>
+  <data name="Settings_PreferedAudioSourceDeviceMissingText.Text" xml:space="preserve">
+    <value>Prefered audio source is not present. Plug the device or choose another one.</value>
+  </data>
+  <data name="Settings_PreferedVideoSourceDeviceMissingText.Text" xml:space="preserve">
+    <value>Prefered video source is not present. Plug the device or choose another one.</value>
+  </data>
+  <data name="Settings_RegisterPreferedButtonText.Content" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Settings_VideoSourceText.Text" xml:space="preserve">
+    <value>Video Source</value>
+  </data>
+  <data name="Settings_VolumeText.Text" xml:space="preserve">
+    <value>Default Volume</value>
+  </data>
+  <data name="Shell_NewVersionAvailable.Content" xml:space="preserve">
+    <value>New Version Available !</value>
   </data>
 </root>

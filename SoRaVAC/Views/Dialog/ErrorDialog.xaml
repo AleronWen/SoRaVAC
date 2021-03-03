@@ -1,0 +1,24 @@
+﻿<ContentDialog
+    x:Class="SoRaVAC.Views.Dialog.ErrorDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SoRaVAC.Views.Dialog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    PrimaryButtonText="OK"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick">
+
+    <ContentDialog.TitleTemplate>
+        <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Margin="{StaticResource SmallRightMargin}" FontFamily="Segoe MDL2 Assets" FontSize="{StaticResource LargeFontSize}" Text="&#xE7BA;"/>
+                <TextBlock VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}" Text="{Binding}"/>
+            </StackPanel>
+        </DataTemplate>
+    </ContentDialog.TitleTemplate>
+    
+    <Grid>
+        <TextBlock Text="{x:Bind Content}" TextWrapping="Wrap"/>
+    </Grid>
+</ContentDialog>
