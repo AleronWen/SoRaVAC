@@ -167,6 +167,9 @@
     <Compile Include="Views\CapturePage.xaml.cs">
       <DependentUpon>CapturePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialog\DeviceSelectionDialog.xaml.cs">
+      <DependentUpon>DeviceSelectionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialog\ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
     </Compile>
@@ -207,6 +210,10 @@
     <Page Include="Views\CapturePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Dialog\DeviceSelectionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialog\ErrorDialog.xaml">
       <SubType>Designer</SubType>

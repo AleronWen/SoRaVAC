@@ -338,9 +338,20 @@ namespace SoRaVAC.Views
                     else
                     {
                         // Show a Dialog to choose sources
-                        VideoSource = null;
-                        AudioSource = null;
-                        AudioRenderer = null;
+
+                        DeviceSelectionDialog dialog = new DeviceSelectionDialog(VideoSourcesList, AudioSourcesList, AudioRenderersList);
+                        var result = await dialog.ShowAsync();
+                        if (result == ContentDialogResult.Primary)
+                        {
+                            VideoSource = new PreferedDeviceInformation(dialog.SelectedVideoSource.DeviceInformation);
+                            AudioSource = new PreferedDeviceInformation(dialog.SelectedAudioSource.DeviceInformation);
+                            AudioRenderer = new PreferedDeviceInformation(dialog.SelectedAudioRenderer.DeviceInformation);
+                        }
+                        else
+                        {
+                            // we exit the function
+                            return;
+                        }
                     }
 
                     await StartCaptureAsync();

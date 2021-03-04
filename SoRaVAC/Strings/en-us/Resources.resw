@@ -253,4 +253,13 @@ This software permits to display your video game console on your computer's scre
   <data name="Capture_PlayStopButtonTooltip_stop" xml:space="preserve">
     <value>Stop capture</value>
   </data>
+  <data name="DeviceSelectionDialog.PrimaryButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="DeviceSelectionDialog.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DeviceSelectionDialog.Title" xml:space="preserve">
+    <value>Capture Devices Selection</value>
+  </data>
 </root>
