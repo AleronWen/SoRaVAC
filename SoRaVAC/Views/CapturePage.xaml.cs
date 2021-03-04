@@ -4,10 +4,13 @@ using SoRaVAC.Models;
 using SoRaVAC.Views.Contracts;
 using SoRaVAC.Views.Dialog;
 using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.Devices.Enumeration;
 using Windows.Graphics.Display;
 using Windows.Media.Audio;
@@ -43,8 +46,34 @@ namespace SoRaVAC.Views
         private Thickness _contentAreaMargin;
 
         private double _soundVolume;
-
         private bool _isFullScreenMode;
+        private PlayingStatusEnum _playingStatus;
+
+        private bool _isPreferedVideoSourcePresent;
+        private bool _isPreferedAudioSourcePresent;
+        private bool _isPreferedAudioRendererPresent;
+
+        private PreferedDeviceInformation _preferedVideoSource;
+        private PreferedDeviceInformation _preferedAudioSource;
+        private PreferedDeviceInformation _preferedAudioRenderer;
+
+        private readonly ResourceLoader _resourceLoader;
+
+        public bool IsPreferedVideoSourcePresent
+        {
+            get { return _isPreferedVideoSourcePresent; }
+            set { Set(ref _isPreferedVideoSourcePresent, value); }
+        }
+        public bool IsPreferedAudioSourcePresent
+        {
+            get { return _isPreferedAudioSourcePresent; }
+            set { Set(ref _isPreferedAudioSourcePresent, value); }
+        }
+        public bool IsPreferedAudioRendererPresent
+        {
+            get { return _isPreferedAudioRendererPresent; }
+            set { Set(ref _isPreferedAudioRendererPresent, value); }
+        }
 
         public double SoundVolume
         {
@@ -61,11 +90,30 @@ namespace SoRaVAC.Views
             set { Set(ref _isFullScreenMode, value); }
         }
 
-        public PlayingStatusEnum PlayingStatus;
+        public PlayingStatusEnum PlayingStatus
+        {
+            get { return _playingStatus;  }
+            set { Set(ref _playingStatus, value);  }
+        }
+
+        #region Device Watchers
+        private DeviceWatcherHelper VideoSourceDeviceWatcherHelper;
+        private DeviceWatcherHelper AudioSourceDeviceWatcherHelper;
+        private DeviceWatcherHelper AudioRendererDeviceWatcherHelper;
+        public ObservableCollection<DeviceInformationDisplay> VideoSourcesList { get; } = new ObservableCollection<DeviceInformationDisplay>();
+        public ObservableCollection<DeviceInformationDisplay> AudioSourcesList { get; } = new ObservableCollection<DeviceInformationDisplay>();
+        public ObservableCollection<DeviceInformationDisplay> AudioRenderersList { get; } = new ObservableCollection<DeviceInformationDisplay>();
+        #endregion
 
         public CapturePage()
         {
             InitializeComponent();
+
+            _resourceLoader = ResourceLoader.GetForCurrentView();
+
+            VideoSourcesList.CollectionChanged += VideoDevicesListHandleChange;
+            AudioSourcesList.CollectionChanged += AudioSourcesListHandleChange;
+            AudioRenderersList.CollectionChanged += AudioRenderersListHandleChange;
 
             IsFullScreenMode = false;
 
@@ -74,29 +122,171 @@ namespace SoRaVAC.Views
 
             PlayingStatus = PlayingStatusEnum.Stopped;
 
+            ToolTipService.SetToolTip(PlayStopButton, _resourceLoader.GetString("Capture_PlayStopButtonTooltip_play"));
+
             double soundVolume = AudioVideoSettingsStorageHelper.LoadSoundVolume();
             _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => SoundVolume = soundVolume);
 
-            VideoSource = AudioVideoSettingsStorageHelper.LoadPreferedVideoSource();
-            AudioSource = AudioVideoSettingsStorageHelper.LoadPreferedAudioSource();
-            AudioRenderer = AudioVideoSettingsStorageHelper.LoadPreferedAudioRenderer();
+            _preferedVideoSource = AudioVideoSettingsStorageHelper.LoadPreferedVideoSource();
+            _preferedAudioSource = AudioVideoSettingsStorageHelper.LoadPreferedAudioSource();
+            _preferedAudioRenderer = AudioVideoSettingsStorageHelper.LoadPreferedAudioRenderer();
+
+            IsPreferedVideoSourcePresent = false;
+            IsPreferedAudioSourcePresent = false;
+            IsPreferedAudioRendererPresent = false;
+
+            VideoSourceDeviceWatcherHelper = new DeviceWatcherHelper(VideoSourcesList, this.Dispatcher);
+            AudioSourceDeviceWatcherHelper = new DeviceWatcherHelper(AudioSourcesList, Dispatcher);
+            AudioRendererDeviceWatcherHelper = new DeviceWatcherHelper(AudioRenderersList, Dispatcher);
 
             Window.Current.VisibilityChanged += Current_VisibilityChangedAsync;
         }
 
+        private void VideoDevicesListHandleChange(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    if (!IsPreferedVideoSourcePresent && _preferedVideoSource != null)
+                    {
+                        foreach (DeviceInformationDisplay device in e.NewItems)
+                        {
+                            if (_preferedVideoSource.Id == device.Id)
+                            {
+                                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => IsPreferedVideoSourcePresent = true);
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    if (IsPreferedVideoSourcePresent && _preferedVideoSource != null)
+                    {
+                        foreach (DeviceInformationDisplay device in e.OldItems)
+                        {
+                            if (_preferedVideoSource.Id == device.Id)
+                            {
+                                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => IsPreferedVideoSourcePresent = false);
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    IsPreferedVideoSourcePresent = false;
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    // Probably nothing to do
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    // Probably nothing to do
+                    break;
+                default:
+                    // Nothing to do
+                    break;
+            }
+        }
+
+        private void AudioSourcesListHandleChange(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    if (!IsPreferedAudioSourcePresent && _preferedAudioSource != null)
+                    {
+                        foreach (DeviceInformationDisplay device in e.NewItems)
+                        {
+                            if (_preferedAudioSource.Id == device.Id)
+                            {
+                                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => IsPreferedAudioSourcePresent = true);
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    if (IsPreferedAudioSourcePresent && _preferedAudioSource != null)
+                    {
+                        foreach (DeviceInformationDisplay device in e.OldItems)
+                        {
+                            if (_preferedAudioSource.Id == device.Id)
+                            {
+                                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => IsPreferedAudioSourcePresent = false);
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    IsPreferedAudioSourcePresent = false;
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    // Probably nothing to do
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    // Probably nothing to do
+                    break;
+                default:
+                    // Nothing to do
+                    break;
+            }
+        }
+
+        private void AudioRenderersListHandleChange(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    if (!IsPreferedAudioRendererPresent && _preferedAudioRenderer != null)
+                    {
+                        foreach (DeviceInformationDisplay device in e.NewItems)
+                        {
+                            if (_preferedAudioRenderer.Id == device.Id)
+                            {
+                                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => IsPreferedAudioRendererPresent = true);
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    if (IsPreferedAudioRendererPresent && _preferedAudioRenderer != null)
+                    {
+                        foreach (DeviceInformationDisplay device in e.OldItems)
+                        {
+                            if (_preferedAudioRenderer.Id == device.Id)
+                            {
+                                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => IsPreferedAudioRendererPresent = false);
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    IsPreferedAudioRendererPresent = false;
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    // Probably nothing to do
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    // Probably nothing to do
+                    break;
+                default:
+                    // Nothing to do
+                    break;
+            }
+        }
+
         private void Current_VisibilityChangedAsync(object sender, VisibilityChangedEventArgs e)
         {
-            if (ApplicationView.GetForCurrentView().IsFullScreenMode)
+            if (PlayingStatus == PlayingStatusEnum.Playing)
             {
-                if (PlayingStatus == PlayingStatusEnum.Playing)
-                {
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await StopCaptureAsync(PlayingStatusEnum.Paused));
-                    PlayingStatus = PlayingStatusEnum.Paused;
-                }
-                else if (PlayingStatus == PlayingStatusEnum.Paused)
-                {
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await StartCaptureAsync());
-                }
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await StopCaptureAsync(PlayingStatusEnum.Paused));
+                PlayingStatus = PlayingStatusEnum.Paused;
+            }
+            else if (PlayingStatus == PlayingStatusEnum.Paused)
+            {
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await StartCaptureAsync());
             }
         }
 
@@ -117,9 +307,12 @@ namespace SoRaVAC.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            StartWatchers();
         }
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            StopWatchers();
+            ResetWatchers();
             if (PlayingStatus == PlayingStatusEnum.Playing)
             {
                 _ = StopCaptureAsync();
@@ -128,48 +321,49 @@ namespace SoRaVAC.Views
 
         private async void PlayStopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (VideoSource != null && AudioSource != null && AudioRenderer != null)
+            if (PlayingStatus == PlayingStatusEnum.Playing)
             {
-                if (PlayingStatus == PlayingStatusEnum.Playing)
-                {
-                    await StopCaptureAsync();
-                }
-                else
-                {
-                    try
-                    {
-                        await StartCaptureAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.Message);
-                        string message = $"Unable to start the capture, please check if the device is plugged.{Environment.NewLine}You may also go in Settings and select another device.";
-                        string caption = "Capture error";
-                        _ = new ErrorDialog(caption, message).ShowAsync();
-                        //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
+                await StopCaptureAsync();
             }
             else
             {
-                string message = "Please setup video and audio devices in the Settings panel before starting the capture.";
-                string caption = "No Capture device selected";
-                _ = new ErrorDialog(caption, message).ShowAsync();
-                //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                try
+                {
+                    if (CaptureModeSwitch.IsOn)
+                    {
+                        VideoSource = _preferedVideoSource;
+                        AudioSource = _preferedAudioSource;
+                        AudioRenderer = _preferedAudioRenderer;
+                    }
+                    else
+                    {
+                        // Show a Dialog to choose sources
+                        VideoSource = null;
+                        AudioSource = null;
+                        AudioRenderer = null;
+                    }
+
+                    await StartCaptureAsync();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    string message = _resourceLoader.GetString("Capture_CaptureErrorDialog_UnableStartCapture_Message");
+                    string caption = _resourceLoader.GetString("Capture_CaptureErrorDialog_UnableStartCapture_Caption");
+                    _ = new ErrorDialog(caption, message).ShowAsync();
+                }
             }
         }
 
         private async Task StartCaptureAsync()
         {
-            MediaCaptureInitializationSettings captureInitSettings = InitVideoCaptureSettings();
-            await InitVideoCapture(captureInitSettings);
+            await InitVideoCapture();
             await InitAudioCapture();
             await mediaCapture.StartPreviewAsync();
             graph.Start();
             NativeMethods.PreventSleep();
             PlayingStatus = PlayingStatusEnum.Playing;
-            SizeChangeDetectorGrid.Visibility = Visibility.Visible;
-            ToolTipService.SetToolTip(PlayStopButton, "Stop capture");
+            ToolTipService.SetToolTip(PlayStopButton, _resourceLoader.GetString("Capture_PlayStopButtonTooltip_stop"));
             PlayStopButton.Content = "\uE71A";
         }
 
@@ -179,8 +373,7 @@ namespace SoRaVAC.Views
             await mediaCapture.StopPreviewAsync();
             NativeMethods.AllowSleep();
             PlayingStatus = resultingPlayingStatus;
-            SizeChangeDetectorGrid.Visibility = Visibility.Collapsed;
-            ToolTipService.SetToolTip(PlayStopButton, "Start capture");
+            ToolTipService.SetToolTip(PlayStopButton, _resourceLoader.GetString("Capture_PlayStopButtonTooltip_play"));
             PlayStopButton.Content = "\uE768";
         }
 
@@ -193,8 +386,7 @@ namespace SoRaVAC.Views
 
                 if (IsFullScreenMode)
                 {
-                    var anim = this.Resources["Storyboard1"] as Storyboard;
-                    if (anim != null) anim.Begin();
+                    if (Resources["StoryboardSoundVolumeOverlayFader"] is Storyboard anim) anim.Begin();
                 }
 
 
@@ -207,25 +399,23 @@ namespace SoRaVAC.Views
 
         private void Page_PointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
-            HandleMouseWheel(e.GetCurrentPoint(null).Properties.MouseWheelDelta);
-        }
+            var pointerProperties = e.GetCurrentPoint(null).Properties;
 
-        private void captureElement_PointerWheelChanged(object sender, PointerRoutedEventArgs e)
-        {
-            //HandleMouseWheel(e.GetCurrentPoint(null).Properties.MouseWheelDelta);
-        }
+            // We check that it was not a lateral wheeling
+            if (!pointerProperties.IsHorizontalMouseWheel)
+            {
+                int delta = pointerProperties.MouseWheelDelta;
 
-        private void HandleMouseWheel(int delta)
-        {
-            // Using mouse wheel to update sound volume
-            int roundedValue = (int)Math.Round(SoundVolume);
-            if (delta > 0 && roundedValue < 100)
-            {
-                SoundVolume = roundedValue + 1;
-            }
-            else if (roundedValue > 0)
-            {
-                SoundVolume = roundedValue - 1;
+                // Using mouse wheel to update sound volume
+                int roundedValue = (int)Math.Round(SoundVolume);
+                if (delta > 0 && roundedValue < 100)
+                {
+                    SoundVolume = roundedValue + 1;
+                }
+                else if (delta < 0 && roundedValue > 0)
+                {
+                    SoundVolume = roundedValue - 1;
+                }
             }
         }
 
@@ -233,41 +423,44 @@ namespace SoRaVAC.Views
         {
             if (captureElement != null)
             {
-                if (SizeChangeDetectorGrid.ActualHeight >= 2160 && SizeChangeDetectorGrid.ActualWidth >= 3840)
+                if (sender is Grid SizeChangeDetectorGrid)
                 {
-                    CapturePreviewUpdateSize(3840, 2160);
-                }
-                else if (SizeChangeDetectorGrid.ActualHeight >= 1440 && SizeChangeDetectorGrid.ActualWidth >= 2560)
-                {
-                    CapturePreviewUpdateSize(2560, 1440);
-                }
-                else if (SizeChangeDetectorGrid.ActualHeight >= 1080 && SizeChangeDetectorGrid.ActualWidth >= 1920)
-                {
-                    CapturePreviewUpdateSize(1920, 1080);
-                }
-                else if (SizeChangeDetectorGrid.ActualHeight >= 944 && SizeChangeDetectorGrid.ActualWidth >= 1680)
-                {
-                    CapturePreviewUpdateSize(1680, 944);
-                }
-                else if (SizeChangeDetectorGrid.ActualHeight >= 768 && SizeChangeDetectorGrid.ActualWidth >= 1366)
-                {
-                    CapturePreviewUpdateSize(1366, 768);
-                }
-                else if (SizeChangeDetectorGrid.ActualHeight >= 720 && SizeChangeDetectorGrid.ActualWidth >= 1280)
-                {
-                    CapturePreviewUpdateSize(1280, 720);
-                }
-                else if (SizeChangeDetectorGrid.ActualHeight >= 576 && SizeChangeDetectorGrid.ActualWidth >= 1024)
-                {
-                    CapturePreviewUpdateSize(1024, 576);
-                }
-                else if (SizeChangeDetectorGrid.ActualHeight >= 480 && SizeChangeDetectorGrid.ActualWidth >= 584)
-                {
-                    CapturePreviewUpdateSize(854, 480);
-                }
-                else
-                {
-                    // We do nothing
+                    if (SizeChangeDetectorGrid.ActualHeight >= 2160 && SizeChangeDetectorGrid.ActualWidth >= 3840)
+                    {
+                        CapturePreviewUpdateSize(3840, 2160);
+                    }
+                    else if (SizeChangeDetectorGrid.ActualHeight >= 1440 && SizeChangeDetectorGrid.ActualWidth >= 2560)
+                    {
+                        CapturePreviewUpdateSize(2560, 1440);
+                    }
+                    else if (SizeChangeDetectorGrid.ActualHeight >= 1080 && SizeChangeDetectorGrid.ActualWidth >= 1920)
+                    {
+                        CapturePreviewUpdateSize(1920, 1080);
+                    }
+                    else if (SizeChangeDetectorGrid.ActualHeight >= 944 && SizeChangeDetectorGrid.ActualWidth >= 1680)
+                    {
+                        CapturePreviewUpdateSize(1680, 944);
+                    }
+                    else if (SizeChangeDetectorGrid.ActualHeight >= 768 && SizeChangeDetectorGrid.ActualWidth >= 1366)
+                    {
+                        CapturePreviewUpdateSize(1366, 768);
+                    }
+                    else if (SizeChangeDetectorGrid.ActualHeight >= 720 && SizeChangeDetectorGrid.ActualWidth >= 1280)
+                    {
+                        CapturePreviewUpdateSize(1280, 720);
+                    }
+                    else if (SizeChangeDetectorGrid.ActualHeight >= 576 && SizeChangeDetectorGrid.ActualWidth >= 1024)
+                    {
+                        CapturePreviewUpdateSize(1024, 576);
+                    }
+                    else if (SizeChangeDetectorGrid.ActualHeight >= 480 && SizeChangeDetectorGrid.ActualWidth >= 584)
+                    {
+                        CapturePreviewUpdateSize(854, 480);
+                    }
+                    else
+                    {
+                        // We do nothing
+                    }
                 }
             }
         }
@@ -281,19 +474,16 @@ namespace SoRaVAC.Views
                 Debug.WriteLine($"Caputre size set to {h}p");
             }
         }
-
-        private MediaCaptureInitializationSettings InitVideoCaptureSettings()
+        private async Task InitVideoCapture()
         {
-            return new MediaCaptureInitializationSettings()
+
+            MediaCaptureInitializationSettings captureInitSettings = new MediaCaptureInitializationSettings()
             {
                 AudioDeviceId = "",
                 VideoDeviceId = VideoSource.Id,
-                StreamingCaptureMode = StreamingCaptureMode.AudioAndVideo,
+                StreamingCaptureMode = StreamingCaptureMode.Video,
                 PhotoCaptureSource = PhotoCaptureSource.VideoPreview
             };
-        }
-        private async Task InitVideoCapture(MediaCaptureInitializationSettings captureInitSettings)
-        {
             DisplayRequest displayRequest = new DisplayRequest();
             mediaCapture = new MediaCapture();
             await mediaCapture.InitializeAsync(captureInitSettings);
@@ -358,11 +548,9 @@ namespace SoRaVAC.Views
         private async void Graph_UnrecoverableErrorOccurred(AudioGraph sender, AudioGraphUnrecoverableErrorOccurredEventArgs args)
         {
             // Recreate the graph and all nodes when this happens
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 sender.Dispose();
-                // Re-query for devices
-                //_ = EnumerateVideoAndAudioDevices();
                 // Reset UI
             });
         }
@@ -381,9 +569,6 @@ namespace SoRaVAC.Views
                 // update ContentArea Background and Margin
                 ContentArea.Background = new SolidColorBrush(Colors.Black);
                 ContentArea.Margin = new Thickness(0);
-
-                // hide CommandPanel
-                CommandPanel.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -395,17 +580,39 @@ namespace SoRaVAC.Views
                 ContentArea.Background = _contentAreaBackgroundBrush;
                 ContentArea.Margin = _contentAreaMargin;
 
-                // restore CommandPanel visibility
-                CommandPanel.Visibility = Visibility.Visible;
-
                 // deactivate full screen mode
                 IsFullScreenMode = false;
             }
         }
-    }
+        private void StartWatchers()
+        {
+            VideoSourcesList.Clear();
+            AudioSourcesList.Clear();
+            AudioRenderersList.Clear();
 
-    public enum PlayingStatusEnum
-    {
-        Playing, Paused, Stopped,
+            DeviceWatcher videoDeviceWatcher = DeviceInformation.CreateWatcher(DeviceClass.VideoCapture);
+            DeviceWatcher audioInputDeviceWatcher = DeviceInformation.CreateWatcher(DeviceClass.AudioCapture);
+            DeviceWatcher audioOutputDeviceWatcher = DeviceInformation.CreateWatcher(DeviceClass.AudioRender);
+
+            Debug.WriteLine("Starting Watchers...");
+            VideoSourceDeviceWatcherHelper.StartWatcher(videoDeviceWatcher);
+            AudioSourceDeviceWatcherHelper.StartWatcher(audioInputDeviceWatcher);
+            AudioRendererDeviceWatcherHelper.StartWatcher(audioOutputDeviceWatcher);
+        }
+
+        private void StopWatchers()
+        {
+            VideoSourceDeviceWatcherHelper.StopWatcher();
+            AudioSourceDeviceWatcherHelper.StopWatcher();
+            AudioRendererDeviceWatcherHelper.StopWatcher();
+            Debug.WriteLine("Watchers are stopped.");
+        }
+
+        private void ResetWatchers()
+        {
+            VideoSourceDeviceWatcherHelper.Reset();
+            AudioSourceDeviceWatcherHelper.Reset();
+            AudioRendererDeviceWatcherHelper.Reset();
+        }
     }
 }

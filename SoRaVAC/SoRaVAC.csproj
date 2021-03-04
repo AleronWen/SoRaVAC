@@ -130,6 +130,9 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
+      <Version>6.1.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.5.0</Version>
     </PackageReference>
@@ -150,8 +153,10 @@
     <Compile Include="Helpers\AudioVideoSettingsStorageHelper.cs" />
     <Compile Include="Helpers\DeviceInformationDisplay.cs" />
     <Compile Include="Helpers\DeviceWatcherHelper.cs" />
+    <Compile Include="Helpers\EnumToVisibilityConverter.cs" />
     <Compile Include="Helpers\EnumToBooleanConverter.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
+    <Compile Include="Helpers\PlayingStatusEnum.cs" />
     <Compile Include="Models\PreferedDeviceInformation.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Services\ActivationService.cs" />
