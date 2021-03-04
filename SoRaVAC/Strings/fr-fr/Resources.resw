@@ -268,7 +268,7 @@ Ce logiciel permet, par exemple, d'afficher l'image de votre console de jeu sur 
   <data name="LanguageDisplayName" xml:space="preserve">
     <value>Français</value>
   </data>
-  <data name="Settings_LanguageApplyButtonText" xml:space="preserve">
+  <data name="Settings_LanguageApplyButtonText.Content" xml:space="preserve">
     <value>Appliquer</value>
   </data>
 </root>
