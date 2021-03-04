@@ -21,7 +21,7 @@ using WinUI = Microsoft.UI.Xaml.Controls;
 
 namespace SoRaVAC.Views
 {
-    // TODO WTS: Change the icons and titles for all NavigationViewItems in ShellPage.xaml.
+    // DONE WTS: Change the icons and titles for all NavigationViewItems in ShellPage.xaml.
     public sealed partial class ShellPage : Page, INotifyPropertyChanged, IFullScreenMode
     {
         private readonly KeyboardAccelerator _altLeftKeyboardAccelerator = BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu);

@@ -130,32 +130,32 @@
     <comment>Navigation view item name for Capture</comment>
   </data>
   <data name="Settings_Theme.Text" xml:space="preserve">
-    <value>Choose Theme</value>
+    <value>Choisir un theme</value>
     <comment>Choose theme text for Settings</comment>
   </data>
   <data name="Settings_Theme_Dark.Content" xml:space="preserve">
-    <value>Dark</value>
+    <value>Sombre</value>
     <comment>Dark theme text for Settings</comment>
   </data>
   <data name="Settings_Theme_Default.Content" xml:space="preserve">
-    <value>Windows default</value>
+    <value>Système</value>
     <comment>Windows default theme text for Settings</comment>
   </data>
   <data name="Settings_Theme_Light.Content" xml:space="preserve">
-    <value>Light</value>
+    <value>Clair</value>
     <comment>Light theme text for Settings</comment>
   </data>
   <data name="Settings_About.Text" xml:space="preserve">
-    <value>About this application</value>
+    <value>A propos de cette application</value>
     <comment>About this application title for Settings</comment>
   </data>
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
-    <value>Some Random Video Adapater Capture displays the audio/video stream captured by a capture device (not delivered with this software) like an internal capture card or an USB capture adapter.
-This software permits to display your video game console on your computer's screen. It uses your computer sound system instead of the one from your TV or computer screen (which may be crappy).</value>
+    <value>Some Random Video Adapter Capture est un logiciel qui affiche la capture d'un flux audio/vidéo grâce à un dispositif de caputre externe (non fourni) comme une carte de capture interne ou un boitier de capture USB.
+Ce logiciel permet, par exemple, d'afficher l'image de votre console de jeu sur votre ordinateur en profitant son système de son plutot que celui de votre télévision ou moniteur (probablement de médiocre qualité).</value>
     <comment>About this application description for Settings</comment>
   </data>
   <data name="Settings_PrivacyTermsLink.Content" xml:space="preserve">
-    <value>Privacy Statement</value>
+    <value>Politique de confidentialité</value>
     <comment>Privacy Statement link content for Settings</comment>
   </data>
   <data name="Settings_PrivacyTermsLink.NavigateUri" xml:space="preserve">
@@ -163,112 +163,112 @@ This software permits to display your video game console on your computer's scre
     <comment>Here is your Privacy Statement url for Settings</comment>
   </data>
   <data name="Settings_Personalization.Text" xml:space="preserve">
-    <value>Personalization</value>
+    <value>Personnalisation</value>
     <comment>Personalization text for Settings</comment>
   </data>
   <data name="Capture_Volume.Text" xml:space="preserve">
     <value>Volume</value>
   </data>
   <data name="Settings_AudioRendererText.Text" xml:space="preserve">
-    <value>Audio Renderer</value>
+    <value>Sortie Audio</value>
   </data>
   <data name="Settings_AudioSourceText.Text" xml:space="preserve">
-    <value>Audio Source</value>
+    <value>Source Audio</value>
   </data>
   <data name="Settings_AudioVideoTitle.Text" xml:space="preserve">
-    <value>Audio and Video</value>
+    <value>Audio et Vidéo</value>
   </data>
   <data name="Settings_CodeRepositoryLink.Content" xml:space="preserve">
-    <value>SoRaVAC source code and issue management are on GitHub</value>
+    <value>Le code source de SoRaVAC ainsi que l'outil de gestion de problème sont disponible sur GitHub</value>
   </data>
   <data name="Settings_CodeRepositoryLink.NavigateUri" xml:space="preserve">
     <value>https://github.com/AleronWen/SoRaVAC</value>
   </data>
   <data name="Settings_LicenseLink.Content" xml:space="preserve">
-    <value>SoRaVAC is released under MIT LICENSE</value>
+    <value>SoRaVAC est distribué sous licence MIT</value>
   </data>
   <data name="Settings_LicenseLink.NavigateUri" xml:space="preserve">
     <value>https://opensource.org/licenses/mit-license.php</value>
   </data>
   <data name="Settings_NewVersionAvailableAt.Text" xml:space="preserve">
-    <value> is available on GitHub:</value>
+    <value> est disponible sur GitHub :</value>
   </data>
   <data name="Settings_NewVersionTitle.Text" xml:space="preserve">
-    <value>New Version</value>
+    <value>Nouvelle Version</value>
   </data>
   <data name="Settings_NoRegistredPreferedDeviceText.Text" xml:space="preserve">
-    <value>No prefered device is registred.</value>
+    <value>Aucun dispositif préféré n'est enregistré.</value>
   </data>
   <data name="Settings_PreferedAudioRendererDeviceMissingText.Text" xml:space="preserve">
-    <value>Prefered audio renderer is not present. Plug the device or choose another one.</value>
+    <value>Le périphérique de sortie son préféré n'est pas détecté. Branchez le ou sélectionnez un autre périphérique.</value>
   </data>
   <data name="Settings_PreferedAudioSourceDeviceMissingText.Text" xml:space="preserve">
-    <value>Prefered audio source is not present. Plug the device or choose another one.</value>
+    <value>La source audio préférée n'est pas détectée. Branchez la ou sélectionnez une autre source.</value>
   </data>
   <data name="Settings_PreferedVideoSourceDeviceMissingText.Text" xml:space="preserve">
-    <value>Prefered video source is not present. Plug the device or choose another one.</value>
+    <value>La source vidéo préférée n'est pas détectée. Branchez la ou sélectionnez une autre source.</value>
   </data>
   <data name="Settings_RegisterPreferedButtonText.Content" xml:space="preserve">
-    <value>Register</value>
+    <value>Enregistrer</value>
   </data>
   <data name="Settings_VideoSourceText.Text" xml:space="preserve">
-    <value>Video Source</value>
+    <value>Source Vidéo</value>
   </data>
   <data name="Settings_VolumeText.Text" xml:space="preserve">
-    <value>Default Volume</value>
+    <value>Volume par défaut</value>
   </data>
   <data name="Shell_NewVersionAvailable.Content" xml:space="preserve">
-    <value>New Version Available !</value>
+    <value>Nouvelle version disponible !</value>
   </data>
   <data name="Capture_AudioRendererStatus.Text" xml:space="preserve">
-    <value>Audio Renderer</value>
+    <value>Sortie Audio</value>
   </data>
   <data name="Capture_AudioSourceStatus.Text" xml:space="preserve">
-    <value>Audio Source</value>
+    <value>Source Audio</value>
   </data>
   <data name="Capture_PreferedDevicesStatus.Text" xml:space="preserve">
-    <value>Prefered Devices Status</value>
+    <value>Status des périphériques préférés</value>
   </data>
   <data name="Capture_VideoSourceStatus.Text" xml:space="preserve">
     <value>Video Source</value>
   </data>
   <data name="Capture_CaptureErrorDialog_UnableStartCapture_Caption" xml:space="preserve">
-    <value>Capture error</value>
+    <value>Erreur de capture</value>
   </data>
   <data name="Capture_CaptureErrorDialog_UnableStartCapture_Message" xml:space="preserve">
-    <value>Unable to start the capture, please check if the device is plugged. You may also go in Settings and select another device.</value>
+    <value>Impossible de démarrer la capture, veuillez vérifier que les périphériques sont branchés. Vous pouvez aller vérifier la liste des périphériques connectés dans les paramètres.</value>
   </data>
   <data name="Capture_CaptureModeSwitch.OffContent" xml:space="preserve">
-    <value>Choose a device</value>
+    <value>Choisir les périphériques</value>
   </data>
   <data name="Capture_CaptureModeSwitch.OnContent" xml:space="preserve">
-    <value>Prefered devices</value>
+    <value>Périphériques préférés</value>
   </data>
   <data name="Capture_CaptureModeSwitchHeader.Text" xml:space="preserve">
-    <value>Capture Mode</value>
+    <value>Mode de capture</value>
   </data>
   <data name="Capture_PlayStopButtonTooltip_play" xml:space="preserve">
-    <value>Start capture</value>
+    <value>Démarrer la capture</value>
   </data>
   <data name="Capture_PlayStopButtonTooltip_stop" xml:space="preserve">
-    <value>Stop capture</value>
+    <value>Arrêter la capture</value>
   </data>
   <data name="DeviceSelectionDialog.PrimaryButtonText" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="DeviceSelectionDialog.SecondaryButtonText" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Annuler</value>
   </data>
   <data name="DeviceSelectionDialog.Title" xml:space="preserve">
-    <value>Capture Devices Selection</value>
+    <value>Sélection des périphériques de capture</value>
   </data>
   <data name="Settings_Language.Text" xml:space="preserve">
-    <value>Language</value>
+    <value>Langue</value>
   </data>
   <data name="LanguageDisplayName" xml:space="preserve">
-    <value>English</value>
+    <value>Français</value>
   </data>
   <data name="Settings_LanguageApplyButtonText" xml:space="preserve">
-    <value>Apply</value>
+    <value>Appliquer</value>
   </data>
 </root>

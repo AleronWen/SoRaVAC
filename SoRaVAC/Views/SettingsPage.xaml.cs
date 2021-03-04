@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using SoRaVAC.Core;
 using SoRaVAC.Helpers;
@@ -12,7 +16,9 @@ using SoRaVAC.Models;
 using SoRaVAC.Services;
 
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Resources;
 using Windows.Devices.Enumeration;
+using Windows.Globalization;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -21,8 +27,8 @@ using Windows.UI.Xaml.Navigation;
 
 namespace SoRaVAC.Views
 {
-    // TODO WTS: Add other settings as necessary. For help see https://github.com/Microsoft/WindowsTemplateStudio/blob/release/docs/UWP/pages/settings-codebehind.md
-    // TODO WTS: Change the URL for your privacy policy in the Resource File, currently set to https://YourPrivacyUrlGoesHere
+    // DONE WTS: Add other settings as necessary. For help see https://github.com/Microsoft/WindowsTemplateStudio/blob/release/docs/UWP/pages/settings-codebehind.md
+    // DONE WTS: Change the URL for your privacy policy in the Resource File, currently set to https://YourPrivacyUrlGoesHere
     public sealed partial class SettingsPage : Page, INotifyPropertyChanged
     {
         #region Video Source properties
@@ -175,6 +181,19 @@ namespace SoRaVAC.Views
 
             set { Set(ref _versionDescription, value); }
         }
+
+        public ObservableCollection<LanguageDisplayTemplate> LanguageList { get; } = new ObservableCollection<LanguageDisplayTemplate>();
+
+        private LanguageDisplayTemplate _selectedLanguage;
+
+        public LanguageDisplayTemplate SelectedLanguage
+        {
+            get => _selectedLanguage;
+            set
+            {
+                Set(ref _selectedLanguage, value);
+            }
+        }
         #endregion
 
         public SettingsPage()
@@ -218,6 +237,23 @@ namespace SoRaVAC.Views
             if (IsNewReleaseAvailable)
             {
                 NewRelease = NewReleaseChecker.GetInstance().LastRelease;
+            }
+
+
+            var availableLanguages = ApplicationLanguages.Languages;
+            foreach (string languageCode in availableLanguages)
+            {
+                var language = new Language(languageCode);
+                var cultureInfo = new CultureInfo(languageCode);
+
+                ResourceManager rm = new ResourceManager("Resources", Assembly.GetEntryAssembly());
+                LanguageDisplayTemplate template = new LanguageDisplayTemplate(languageCode, rm.GetString("LanguageDisplayName", cultureInfo));
+                LanguageList.Add(template);
+
+                if (languageCode == Thread.CurrentThread.CurrentUICulture.Name)
+                {
+                    SelectedLanguage = template;
+                }
             }
         }
 
@@ -530,6 +566,15 @@ namespace SoRaVAC.Views
             VideoSourceDeviceWatcherHelper.Reset();
             AudioSourceDeviceWatcherHelper.Reset();
             AudioRendererDeviceWatcherHelper.Reset();
+        }
+
+        private void LanguageApplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            //ApplicationLanguages.PrimaryLanguageOverride = SelectedLanguage.Code;
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(SelectedLanguage.Code);
+            Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Reset();
+            Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse().Reset();
+            Frame.Navigate(this.GetType());
         }
     }
 }

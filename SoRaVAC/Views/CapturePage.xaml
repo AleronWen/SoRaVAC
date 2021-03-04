@@ -33,7 +33,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Prefered Devices Status -->
+            <!-- Command Panel -->
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="{StaticResource SmallLeftTopRightBottomMargin}" MinWidth="940"
                         Visibility="{x:Bind IsFullScreenMode, Converter={StaticResource BoolToInvertedVisibilityConverter}, Mode=OneWay}" ColumnSpacing="12" RowSpacing="4">
                 
@@ -49,7 +49,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
-                
+                <!-- Prefered Devices Status -->
                 <TextBlock Grid.Row="0" Grid.Column="0"
                     x:Uid="Capture_PreferedDevicesStatus" Margin="{StaticResource XXSmallBottomMargin}" FontSize="{StaticResource MediumFontSize}" FontWeight="SemiBold" Text="Placeholder Title"/>
                 <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
@@ -69,17 +69,19 @@
                         <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedAudioRendererPresent, Mode=OneWay}" />
                     </Grid>
                 </StackPanel>
-                
-                
+
+                <!-- Capture Mode -->
                 <TextBlock Grid.Row="0" Grid.Column="1"
                     x:Uid="Capture_CaptureModeSwitchHeader" Margin="{StaticResource XXSmallBottomMargin}" FontSize="{StaticResource MediumFontSize}" FontWeight="SemiBold" Text="Placeholder Text"/>
                 <ToggleSwitch Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
                     x:Name="CaptureModeSwitch" x:Uid="Capture_CaptureModeSwitch" FontSize="{StaticResource MediumFontSize}"
                             OnContent="On Content PH" OffContent="Off Content PH" IsOn="True"/>
 
+                <!-- Play/Stop Button -->
                 <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                     x:Name="PlayStopButton" Margin="{StaticResource MediumLeftMargin}" Width="48" Height="48" Click="PlayStopButton_Click" ToolTipService.Placement="Top" FontSize="{StaticResource LargeFontSize}" Content="&#xE768;" FontFamily="Segoe MDL2 Assets"/>
 
+                <!-- Volume -->
                 <TextBlock Grid.Row="0" Grid.Column="3"
                            x:Uid="Capture_Volume" FontSize="{StaticResource MediumFontSize}" FontWeight="SemiBold" Text="Placeholder text"/>
                 <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal" >
@@ -89,6 +91,9 @@
                 </StackPanel>
             </Grid>
 
+            <!-- TODO: Colorymetry tools -->
+
+            <!-- Capture Panel -->
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" SizeChanged="SizeChangeDetectorGrid_SizeChanged"
                   Visibility="{x:Bind PlayingStatus, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Playing, Mode=OneWay}">
                 <CaptureElement x:Name="captureElement" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.ZIndex="1"/>

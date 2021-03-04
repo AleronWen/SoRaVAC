@@ -12,6 +12,9 @@
         <DataTemplate x:Key="DeviceInformationDisplayTemplate" x:DataType="helper:DeviceInformationDisplay">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
+        <DataTemplate x:Key="LanguageDisplayTemplate" x:DataType="helper:LanguageDisplayTemplate">
+            <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
         <helper:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="ElementTheme" />
     </Page.Resources>
     <ScrollViewer>
@@ -20,8 +23,8 @@
 
                 <!-- New Version -->
                 <StackPanel Visibility="{x:Bind IsNewReleaseAvailable, Mode=OneWay}">
-                    <TextBlock x:Uid="Settings_NewVersionTitle" Margin="{StaticResource SmallTopMargin}" Style="{ThemeResource SubtitleTextBlockStyle}" Text="Placeholder Subtitle"/>
-                    <StackPanel Orientation="Vertical" Margin="{StaticResource SmallTopBottomMargin}">
+                    <TextBlock x:Uid="Settings_NewVersionTitle" Style="{ThemeResource SubtitleTextBlockStyle}" Text="Placeholder Subtitle"/>
+                    <StackPanel Orientation="Vertical" Margin="{StaticResource SmallTopMargin}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource BodyTextStyle}" Text="{x:Bind NewRelease.Name}"/>
                             <TextBlock x:Uid="Settings_NewVersionAvailableAt" Style="{StaticResource BodyTextStyle}" Text="Placeholder text"/>
@@ -32,14 +35,14 @@
 
                 <!-- Audio/Vodeo Settings -->
                 <TextBlock
-                    Margin="{StaticResource SmallTopMargin}"
+                    Margin="{StaticResource MediumTopMargin}"
                     Style="{ThemeResource SubtitleTextBlockStyle}"
                     x:Uid="Settings_AudioVideoTitle" Text="Placeholder Subtitle"/>
-                <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+                <StackPanel>
                     <!-- Video Source -->
-                    <TextBlock Margin="{StaticResource XXSmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_VideoSourceText" Text="Placeholder text"/>
-                    <StackPanel Orientation="Vertical" Margin="{StaticResource XSmallTopBottomMargin}">
-                        <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallBottomMargin}">
+                    <TextBlock Margin="{StaticResource SmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_VideoSourceText" Text="Placeholder text"/>
+                    <StackPanel Orientation="Vertical" Margin="{StaticResource XSmallTopMargin}">
+                        <StackPanel Orientation="Horizontal">
                             <ComboBox Width="400" ItemsSource="{x:Bind VideoSourcesList}" ItemTemplate="{StaticResource DeviceInformationDisplayTemplate}" SelectedItem="{x:Bind SelectedVideoSource, Mode=TwoWay}" VerticalAlignment="Center"/>
                             <Button x:Name="VideoSourceSetPreferedButton" Margin="{StaticResource SmallLeftMargin}" x:Uid="Settings_RegisterPreferedButtonText" Click="VideoSourceSetPreferedButton_Click" VerticalAlignment="Center" Content="BtnPH"/>
                             <TextBlock x:Name="VideoSourceSetPreferedDevice" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_NoRegistredPreferedDeviceText" Text="Placeholder text"/>
@@ -50,9 +53,9 @@
                         </StackPanel>
                     </StackPanel>
                     <!-- Audio Source -->
-                    <TextBlock Margin="{StaticResource XXSmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_AudioSourceText" Text="Placeholder text"/>
-                    <StackPanel Orientation="Vertical" Margin="{StaticResource XSmallTopBottomMargin}">
-                        <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallBottomMargin}">
+                    <TextBlock Margin="{StaticResource SmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_AudioSourceText" Text="Placeholder text"/>
+                    <StackPanel Orientation="Vertical" Margin="{StaticResource XSmallTopMargin}">
+                        <StackPanel Orientation="Horizontal">
                             <ComboBox Width="400" ItemsSource="{x:Bind AudioSourcesList}" ItemTemplate="{StaticResource DeviceInformationDisplayTemplate}" SelectedItem="{x:Bind SelectedAudioSource, Mode=TwoWay}" VerticalAlignment="Center"/>
                             <Button x:Name="AudioSourceSetPreferedButton" Margin="{StaticResource SmallLeftMargin}" x:Uid="Settings_RegisterPreferedButtonText" Click="AudioSourceSetPreferedButton_Click" VerticalAlignment="Center" Content="BtnPH"/>
                             <TextBlock x:Name="AudioSourceSetPreferedDevice" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_NoRegistredPreferedDeviceText" Text="Placeholder text"/>
@@ -63,9 +66,9 @@
                         </StackPanel>
                     </StackPanel>
                     <!-- Audio Renderer -->
-                    <TextBlock Margin="{StaticResource XXSmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_AudioRendererText" Text="Placeholder text"/>
-                    <StackPanel Orientation="Vertical" Margin="{StaticResource XSmallTopBottomMargin}">
-                        <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallBottomMargin}">
+                    <TextBlock Margin="{StaticResource SmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_AudioRendererText" Text="Placeholder text"/>
+                    <StackPanel Orientation="Vertical" Margin="{StaticResource XSmallTopMargin}">
+                        <StackPanel Orientation="Horizontal">
                             <ComboBox Width="400" ItemsSource="{x:Bind AudioRenderersList}" ItemTemplate="{StaticResource DeviceInformationDisplayTemplate}" SelectedItem="{x:Bind SelectedAudioRenderer, Mode=TwoWay}" VerticalAlignment="Center"/>
                             <Button x:Name="AudioRendererSetPreferedButton" Margin="{StaticResource SmallLeftMargin}" x:Uid="Settings_RegisterPreferedButtonText" Click="AudioRendererSetPreferedButton_Click" VerticalAlignment="Center" Content="BtnPH"/>
                             <TextBlock x:Name="AudioRendererSetPreferedDevice" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_NoRegistredPreferedDeviceText" Text="Placeholder text"/>
@@ -76,8 +79,8 @@
                         </StackPanel>
                     </StackPanel>
                     <!-- Volume -->
-                    <TextBlock Margin="{StaticResource XXSmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_VolumeText" Text="Placeholder text"/>
-                    <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallTopBottomMargin}">
+                    <TextBlock Margin="{StaticResource SmallTopMargin}" Style="{StaticResource BodyTextStyle}" x:Uid="Settings_VolumeText" Text="Placeholder text"/>
+                    <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallTopMargin}">
                         <Slider x:Name="SoundVolumeSlier" Width="400" Minimum="0" Maximum="100" TickFrequency="5" TickPlacement="TopLeft" VerticalAlignment="Center"
                                 Value="{x:Bind SoundVolume, Mode=TwoWay}" ValueChanged="SoundVolumeSlier_ValueChanged"/>
                         <TextBlock x:Name="SoundVolumeTextBlock" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" Text="PH%" Width="50"/>
@@ -85,9 +88,9 @@
                 </StackPanel>
 
                 <!-- UI Personalization -->
-                <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" Text="Placeholder Subtitle"/>
-                <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <TextBlock x:Uid="Settings_Theme" Text="Placeholder Text"/>
+                <TextBlock x:Uid="Settings_Personalization" Margin="{StaticResource MediumTopMargin}" Style="{ThemeResource SubtitleTextBlockStyle}" Text="Placeholder Subtitle"/>
+                <StackPanel>
+                    <TextBlock x:Uid="Settings_Theme" Style="{StaticResource BodyTextStyle}" Margin="{StaticResource SmallTopMargin}" Text="Placeholder Text"/>
 
                     <StackPanel Margin="{StaticResource XSmallTopMargin}">
                         <RadioButton 
@@ -123,13 +126,20 @@
                                 <xaml:ElementTheme>Default</xaml:ElementTheme>
                             </RadioButton.CommandParameter>
                         </RadioButton>
+
+                        <!-- TODO: Add Language Selection ComboBox -->
+                        <TextBlock x:Uid="Settings_Language" Margin="{StaticResource SmallTopMargin}" Style="{StaticResource BodyTextStyle}" Text="Placeholder Text"/>
+                        <StackPanel Orientation="Horizontal" Margin="{StaticResource SmallTopMargin}" >
+                            <ComboBox x:Name="LanguageComboBox" Width="400" ItemsSource="{x:Bind LanguageList}" ItemTemplate="{StaticResource LanguageDisplayTemplate}" SelectedItem="{x:Bind SelectedLanguage, Mode=TwoWay}" VerticalAlignment="Center"/>
+                            <Button x:Name="LanguageApplyButton" Margin="{StaticResource SmallLeftMargin}" x:Uid="Settings_LanguageApplyButtonText" Click="LanguageApplyButton_Click" VerticalAlignment="Center" Content="BtnPH"/>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
-                <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" Text="Placeholder Subtitle"/>
+                <TextBlock x:Uid="Settings_About" Margin="{StaticResource MediumTopMargin}" Style="{ThemeResource SubtitleTextBlockStyle}" Text="Placeholder Subtitle"/>
 
-                <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind VersionDescription, Mode=OneWay}" />
+                <StackPanel>
+                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="{StaticResource SmallTopMargin}" Text="{x:Bind VersionDescription, Mode=OneWay}" />
                     <TextBlock
                         x:Uid="Settings_AboutDescription"
                         Margin="{StaticResource XSmallTopMargin}"
