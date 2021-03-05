@@ -271,4 +271,10 @@ This software permits to display your video game console on your computer's scre
   <data name="Settings_LanguageApplyButtonText.Content" xml:space="preserve">
     <value>Apply</value>
   </data>
+  <data name="Capture_Tooltip_DeviceMissing.Text" xml:space="preserve">
+    <value>Device is not connected</value>
+  </data>
+  <data name="Capture_Tooltip_DevicePresent.Text" xml:space="preserve">
+    <value>Device is connected</value>
+  </data>
 </root>

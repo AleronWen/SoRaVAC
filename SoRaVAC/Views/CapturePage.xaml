@@ -55,18 +55,42 @@
                 <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                     <TextBlock x:Uid="Capture_VideoSourceStatus" FontSize="{StaticResource MediumFontSize}" VerticalAlignment="Center" Text="Placeholder Text"/>
                     <Grid Margin="{StaticResource XSmallLeftMargin}" VerticalAlignment="Center">
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets"/>
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedVideoSourcePresent, Mode=OneWay}" />
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DeviceMissing"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedVideoSourcePresent, Mode=OneWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DevicePresent"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
                     </Grid>
                     <TextBlock x:Uid="Capture_AudioSourceStatus" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" FontSize="{StaticResource MediumFontSize}" Text="Placeholder Text"/>
                     <Grid Margin="{StaticResource XSmallLeftMargin}" VerticalAlignment="Center">
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets"/>
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedAudioSourcePresent, Mode=OneWay}" />
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DeviceMissing"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedAudioSourcePresent, Mode=OneWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DevicePresent"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
                     </Grid>
                     <TextBlock x:Uid="Capture_AudioRendererStatus" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" FontSize="{StaticResource MediumFontSize}" Text="Placeholder Text"/>
                     <Grid Margin="{StaticResource XSmallLeftMargin}" VerticalAlignment="Center">
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets"/>
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedAudioRendererPresent, Mode=OneWay}" />
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DeviceMissing"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedAudioRendererPresent, Mode=OneWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DevicePresent"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
                     </Grid>
                 </StackPanel>
 
