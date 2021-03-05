@@ -182,6 +182,7 @@ namespace SoRaVAC.Views
             set { Set(ref _versionDescription, value); }
         }
 
+        private static string[] _availableLanguages = new string[] { "en-US", "fr-FR" };
         public ObservableCollection<LanguageDisplayTemplate> LanguageList { get; } = new ObservableCollection<LanguageDisplayTemplate>();
 
         private LanguageDisplayTemplate _selectedLanguage;
@@ -239,20 +240,17 @@ namespace SoRaVAC.Views
                 NewRelease = NewReleaseChecker.GetInstance().LastRelease;
             }
 
-
-            var availableLanguages = ApplicationLanguages.Languages;
-            foreach (string languageCode in availableLanguages)
+            ResourceManager rm = new ResourceManager("Resources", Assembly.GetEntryAssembly());
+            
+            foreach (string languageCode in _availableLanguages)
             {
-                var language = new Language(languageCode);
-                var cultureInfo = new CultureInfo(languageCode);
-
-                ResourceManager rm = new ResourceManager("Resources", Assembly.GetEntryAssembly());
-                LanguageDisplayTemplate template = new LanguageDisplayTemplate(languageCode, rm.GetString("LanguageDisplayName", cultureInfo));
-                LanguageList.Add(template);
+                var cultureInfo = new CultureInfo(languageCode);                
+                LanguageDisplayTemplate language = new LanguageDisplayTemplate(languageCode, rm.GetString("LanguageDisplayName", cultureInfo));
+                LanguageList.Add(language);
 
                 if (languageCode == Thread.CurrentThread.CurrentUICulture.Name)
                 {
-                    SelectedLanguage = template;
+                    SelectedLanguage = language;
                 }
             }
         }
@@ -570,8 +568,7 @@ namespace SoRaVAC.Views
 
         private void LanguageApplyButton_Click(object sender, RoutedEventArgs e)
         {
-            //ApplicationLanguages.PrimaryLanguageOverride = SelectedLanguage.Code;
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(SelectedLanguage.Code);
+            ApplicationLanguages.PrimaryLanguageOverride = SelectedLanguage.Code;
             Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Reset();
             Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse().Reset();
             Frame.Navigate(this.GetType());
