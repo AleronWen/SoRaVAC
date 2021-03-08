@@ -35,12 +35,12 @@ Windows may ask you to authorize *Webcam* and *microphone* usage. You should do 
 The following devices are supported:
 
 - High End
-    - Avermedia Live Gamer Ultra GC553 (Note: Audio is reported to be a little bit out of sync)
+  - Avermedia Live Gamer Ultra GC553 (Note: Audio is reported to be a little bit out of sync)
 - Cheap adapters (USB 3)
-    - Hagibis UHC05
+- Hagibis UHC05
 - Cheap adapters (USB 2)
-    - AMANKA CJQ-ES (Warning: image quality is not very good)
-    - ATopoler S1788016410
+  - AMANKA CJQ-ES (Warning: image quality is not very good)
+  - ATopoler S1788016410
 
 The following devices are **not** supported:
 
@@ -52,10 +52,10 @@ Please use the GitHub's **Issues** functionality.
 
 ## Roadmap
 
-- [ ] proper packaging
-- [x] full screen mode
-- [ ] Possibility to capture without using the prefered devices
-- [ ] Display prefered devices status on the capture page
+- [x] Proper packaging
+- [x] Full screen mode
+- [x] Possibility to capture without using the prefered devices
+- [x] Display prefered devices status on the capture page
 - [ ] UI/UX review
 - [ ] Add built-in help
 

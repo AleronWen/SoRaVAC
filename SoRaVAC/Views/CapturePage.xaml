@@ -5,9 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helper="using:SoRaVAC.Helpers"
+    xmlns:uwp="using:Microsoft.Toolkit.Uwp.UI.Controls" 
     xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     Style="{StaticResource PageStyle}"
     PointerWheelChanged="Page_PointerWheelChanged"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
     
     <Page.Resources>        
@@ -22,7 +24,7 @@
         <converters:BoolToObjectConverter x:Key="BoolToInvertedVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible"/>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}" >
+    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid>
             <!--
                 The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
@@ -33,9 +35,15 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
             <!-- Command Panel -->
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="{StaticResource SmallLeftTopRightBottomMargin}" MinWidth="940"
-                        Visibility="{x:Bind IsFullScreenMode, Converter={StaticResource BoolToInvertedVisibilityConverter}, Mode=OneWay}" ColumnSpacing="12" RowSpacing="4">
+            <Grid Grid.Row="0" Grid.Column="0"
+                HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="{StaticResource SmallLeftTopRightBottomMargin}"
+                Visibility="{x:Bind IsFullScreenMode, Converter={StaticResource BoolToInvertedVisibilityConverter}, Mode=OneWay}" ColumnSpacing="12" RowSpacing="4">
                 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -45,7 +53,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" MinWidth="96"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
@@ -55,18 +63,42 @@
                 <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                     <TextBlock x:Uid="Capture_VideoSourceStatus" FontSize="{StaticResource MediumFontSize}" VerticalAlignment="Center" Text="Placeholder Text"/>
                     <Grid Margin="{StaticResource XSmallLeftMargin}" VerticalAlignment="Center">
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets"/>
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedVideoSourcePresent, Mode=OneWay}" />
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DeviceMissing"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedVideoSourcePresent, Mode=OneWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DevicePresent"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
                     </Grid>
                     <TextBlock x:Uid="Capture_AudioSourceStatus" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" FontSize="{StaticResource MediumFontSize}" Text="Placeholder Text"/>
                     <Grid Margin="{StaticResource XSmallLeftMargin}" VerticalAlignment="Center">
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets"/>
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedAudioSourcePresent, Mode=OneWay}" />
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DeviceMissing"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedAudioSourcePresent, Mode=OneWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DevicePresent"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
                     </Grid>
                     <TextBlock x:Uid="Capture_AudioRendererStatus" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" FontSize="{StaticResource MediumFontSize}" Text="Placeholder Text"/>
                     <Grid Margin="{StaticResource XSmallLeftMargin}" VerticalAlignment="Center">
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets"/>
-                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedAudioRendererPresent, Mode=OneWay}" />
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF138;" FontFamily="Segoe MDL2 Assets">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DeviceMissing"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                        <TextBlock FontSize="{StaticResource MediumFontSize}" Text="&#xF13E;" FontFamily="Segoe MDL2 Assets" Visibility="{x:Bind IsPreferedAudioRendererPresent, Mode=OneWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="Capture_Tooltip_DevicePresent"/>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
                     </Grid>
                 </StackPanel>
 
@@ -79,23 +111,49 @@
 
                 <!-- Play/Stop Button -->
                 <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
-                    x:Name="PlayStopButton" Margin="{StaticResource MediumLeftMargin}" Width="48" Height="48" Click="PlayStopButton_Click" ToolTipService.Placement="Top" FontSize="{StaticResource LargeFontSize}" Content="&#xE768;" FontFamily="Segoe MDL2 Assets"/>
+                    x:Name="PlayStopButton" Margin="{StaticResource MediumLeftRightMargin}" Width="48" Height="48" Click="PlayStopButton_Click" ToolTipService.Placement="Top" FontSize="{StaticResource LargeFontSize}" Content="&#xE768;" FontFamily="Segoe MDL2 Assets"/>
 
-                <!-- Volume -->
+                <!-- Volume 
                 <TextBlock Grid.Row="0" Grid.Column="3"
                            x:Uid="Capture_Volume" FontSize="{StaticResource MediumFontSize}" FontWeight="SemiBold" Text="Placeholder text"/>
                 <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal" >
                     <Slider x:Name="SoundVolumeSlider" VerticalAlignment="Center" Width="200" Minimum="0" Maximum="100" TickFrequency="5" TickPlacement="Outside"
                     Value="{x:Bind SoundVolume, Mode=TwoWay}" ValueChanged="SoundVolumeSlider_ValueChanged"/>
                     <TextBlock x:Name="SoundVolumeTextBlock" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Text="PH%" Width="50"/>
-                </StackPanel>
+                </StackPanel>-->
             </Grid>
 
             <!-- TODO: Colorymetry tools -->
 
+            <!-- Volume Panel -->
+            <!-- Note that Margin is not Small-Thing-Marging like the Command Panel because of the Expander interal structure -->
+            <uwp:Expander Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Margin="{StaticResource XXSmallTopMargin}" Visibility="{x:Bind IsFullScreenMode, Converter={StaticResource BoolToInvertedVisibilityConverter}, Mode=OneWay}"
+                          Header="Volume" Foreground="Black" Background="Transparent" ExpandDirection="Down" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.ZIndex="2">
+                <uwp:Expander.HeaderStyle>
+                    <!-- We style the content of the Expander ToogleButton like Command Panel categories -->
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="FontSize" Value="{StaticResource MediumFontSize}"/>
+                    </Style>
+                </uwp:Expander.HeaderStyle>
+                <Grid Padding="24,0,0,0">
+                    <Grid.RowDefinitions>
+                        <!--<RowDefinition Height="*"/>-->
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--<TextBlock Grid.Row="0" x:Uid="Capture_Volume" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="{StaticResource MediumFontSize}" FontWeight="SemiBold" Text="Placeholder text"/>-->
+                    <Slider Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" x:Name="SoundVolumeSlider" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="{StaticResource SmallTopBottomMargin}" Orientation="Vertical" Height="200" Minimum="0" Maximum="100" TickFrequency="5" TickPlacement="Outside"
+                    Value="{x:Bind SoundVolume, Mode=TwoWay}" ValueChanged="SoundVolumeSlider_ValueChanged"/>
+                    <TextBlock Grid.Row="1" x:Name="SoundVolumeTextBlock" VerticalAlignment="Top" HorizontalAlignment="Center" Text="PH%"/>
+                </Grid>
+            </uwp:Expander>
+
             <!-- Capture Panel -->
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" SizeChanged="SizeChangeDetectorGrid_SizeChanged"
-                  Visibility="{x:Bind PlayingStatus, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Playing, Mode=OneWay}">
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="SizeChangeDetectorGrid_SizeChanged"
+                Visibility="{x:Bind PlayingStatus, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Playing, Mode=OneWay}">
                 <CaptureElement x:Name="captureElement" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.ZIndex="1"/>
                 <TextBlock x:Name="SoundVolumeOverlayTextBlock" Visibility="{x:Bind IsFullScreenMode, Mode=OneWay}" Text="PH%" FontSize="{StaticResource LargeFontSize}" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Top" Canvas.ZIndex="2" Opacity="0"/>
             </Grid>
