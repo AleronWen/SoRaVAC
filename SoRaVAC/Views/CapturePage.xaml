@@ -9,6 +9,7 @@
     xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     Style="{StaticResource PageStyle}"
     PointerWheelChanged="Page_PointerWheelChanged"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
     
     <Page.Resources>        
