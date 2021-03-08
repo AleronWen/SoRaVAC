@@ -182,7 +182,6 @@ namespace SoRaVAC.Views
             set { Set(ref _versionDescription, value); }
         }
 
-        private static string[] _availableLanguages = new string[] { "en-US", "fr-FR" };
         public ObservableCollection<LanguageDisplayTemplate> LanguageList { get; } = new ObservableCollection<LanguageDisplayTemplate>();
 
         private LanguageDisplayTemplate _selectedLanguage;
@@ -242,10 +241,9 @@ namespace SoRaVAC.Views
 
             ResourceManager rm = new ResourceManager("Resources", Assembly.GetEntryAssembly());
             
-            foreach (string languageCode in _availableLanguages)
+            foreach (string languageCode in GlobalizationHelper.AvailableLanguages)
             {
-                var cultureInfo = new CultureInfo(languageCode);                
-                LanguageDisplayTemplate language = new LanguageDisplayTemplate(languageCode, rm.GetString("LanguageDisplayName", cultureInfo));
+                LanguageDisplayTemplate language = GlobalizationHelper.GetLanguageDisplayTemplate(rm, languageCode);
                 LanguageList.Add(language);
 
                 if (languageCode == Thread.CurrentThread.CurrentUICulture.Name)
