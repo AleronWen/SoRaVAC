@@ -158,6 +158,7 @@
     <Compile Include="Helpers\DeviceWatcherHelper.cs" />
     <Compile Include="Helpers\EnumToVisibilityConverter.cs" />
     <Compile Include="Helpers\EnumToBooleanConverter.cs" />
+    <Compile Include="Helpers\GlobalizationHelper.cs" />
     <Compile Include="Helpers\LanguageDisplayTemplate.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
     <Compile Include="Helpers\PlayingStatusEnum.cs" />
@@ -167,6 +168,9 @@
     <Compile Include="Activation\DefaultActivationHandler.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
+    <Compile Include="Views\HelpPage.xaml.cs">
+      <DependentUpon>HelpPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Contracts\IFullScreenMode.cs" />
     <Compile Include="Views\CapturePage.xaml.cs">
       <DependentUpon>CapturePage.xaml</DependentUpon>
@@ -208,6 +212,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HelpPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -297,6 +305,12 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="SoRaVAC_TemporaryKey.pfx" />
+    <None Include="Help\help.en-us.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Help\help.fr-fr.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <PRIResource Include="Strings\fr-fr\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
