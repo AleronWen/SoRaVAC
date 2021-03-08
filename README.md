@@ -13,22 +13,24 @@ Enjoy!
 
 ## Technical description
 
-SoRaVAC is a .Net Core 3.1 project with WPF UI and UWP dependency for the [MediaCapture](https://docs.microsoft.com/en-gb/uwp/api/Windows.Media.Capture.MediaCapture?view=winrt-18362) class which is the project's angular stone.
+SoRaVAC is a .Net UWP project for the [MediaCapture](https://docs.microsoft.com/en-gb/uwp/api/Windows.Media.Capture.MediaCapture?view=winrt-18362) class which is the project's angular stone.
 > "The MediaCapture class exposes a robust set of APIs that provide low-level control over the capture pipeline and enable advanced capture scenarios [...]." - [Microsoft documentation](https://docs.microsoft.com/en-gb/windows/uwp/audio-video-camera/basic-photo-video-and-audio-capture-with-mediacapture)
 
-SoRaVAC requires Windows 10 version 1903 (build 18362) or newer to work because of the dependency to [WindowsXamlHost control host](https://docs.microsoft.com/en-gb/windows/communitytoolkit/controls/wpf-winforms/windowsxamlhost) that permits to use MediaCapture in a .Net Core 3.1 + WPF UI.
+SoRaVAC requires Windows 10 version 1903 (build 18362) or newer to work.
 
-The very first version of SoRaVAC was a full UWP software but I was unhappy with packaging possibilies. I wanted to have more freedom in distribution so this .Net Core 3.1 + WPF UI + UWP dependency is a good compromise.
+The first released version of SoRaVAC was a .net WPF with UWP host dependency software. I rewrote the project in full .net UWP to have more up to date UI (and a more simple project).
 
 ## Installation
 
-Unzip the release package anywhere on your computer.
+Run the installer package and wait for the install process to complete.
 
 ## Usage
 
-Launch **SoRaVAC.exe**. In Settings, register the video source (the video capture adapter), the audio source  (the video capture adapter virtual internace) and the audio renderer (the basic output for audio), the in the Capture panel press the play button.
+Launch SoRaVAC shortcut in Windows Menu.
 
-Windows may ask you to authorize *Webcam* and *microphone* usage. You should do it if you want to play...
+In Settings, register the video source (the video capture adapter), the audio source  (the video capture adapter virtual internace) and the audio renderer (the basic output for audio), the in the Capture panel press the play button.
+
+Windows will ask you to authorize *Webcam* and *microphone* usage. You should do it if you want to play...
 
 ## Known supported an unsupported devices
 
