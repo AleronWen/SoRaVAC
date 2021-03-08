@@ -125,8 +125,16 @@
             <!-- TODO: Colorymetry tools -->
 
             <!-- Volume Panel -->
-            <uwp:Expander Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Visibility="{x:Bind IsFullScreenMode, Converter={StaticResource BoolToInvertedVisibilityConverter}, Mode=OneWay}"
+            <!-- Note that Margin is not Small-Thing-Marging like the Command Panel because of the Expander interal structure -->
+            <uwp:Expander Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Margin="{StaticResource XXSmallTopMargin}" Visibility="{x:Bind IsFullScreenMode, Converter={StaticResource BoolToInvertedVisibilityConverter}, Mode=OneWay}"
                           Header="Volume" Foreground="Black" Background="Transparent" ExpandDirection="Down" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.ZIndex="2">
+                <uwp:Expander.HeaderStyle>
+                    <!-- We style the content of the Expander ToogleButton like Command Panel categories -->
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="FontSize" Value="{StaticResource MediumFontSize}"/>
+                    </Style>
+                </uwp:Expander.HeaderStyle>
                 <Grid Padding="24,0,0,0">
                     <Grid.RowDefinitions>
                         <!--<RowDefinition Height="*"/>-->
