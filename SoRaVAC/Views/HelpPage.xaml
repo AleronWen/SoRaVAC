@@ -10,6 +10,6 @@
     mc:Ignorable="d">
 
     <ScrollViewer x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
-        <uwp:MarkdownTextBlock x:Uid="Help_Content" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="{StaticResource SmallLeftTopRightBottomMargin}" MarkdownRendered="MarkdownTextBlock_MarkdownRendered"/>
+        <uwp:MarkdownTextBlock x:Uid="Help_Content" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="{StaticResource SmallLeftTopRightBottomMargin}" MarkdownRendered="MarkdownTextBlock_MarkdownRendered" ImageResolving="MarkdownTextBlock_ImageResolving"/>
     </ScrollViewer>
 </Page>

@@ -58,13 +58,27 @@ namespace SoRaVAC.Views
             }
         }
 
-        private void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e)
+        private async void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e)
         {
             var deferral = e.GetDeferral();
 
             try
             {
-                e.Image = new BitmapImage(new Uri(e.Url));
+                Uri imageUri;
+                if (Uri.IsWellFormedUriString(e.Url, UriKind.Relative))
+                {
+                    imageUri = await GlobalizationHelper.GetAssetFileAsync(e.Url);
+                }
+                else if (Uri.IsWellFormedUriString(e.Url, UriKind.Absolute))
+                {
+                    imageUri = new Uri(e.Url);
+                }
+                else
+                {
+                    throw new UriFormatException($"URI '{e.Url}' is malformated");
+                }
+
+                e.Image = new BitmapImage(imageUri);
             }
             catch (Exception ex)
             {
