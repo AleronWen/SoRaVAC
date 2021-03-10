@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +15,10 @@ namespace SoRaVAC.Helpers
     {
         public static readonly string[] AvailableLanguages = new string[] { "en-US", "fr-FR" };
 
-        public static LanguageDisplayTemplate GetLanguageDisplayTemplate(ResourceManager manager, string languageCode)
+        public static LanguageDisplayTemplate GetLanguageDisplayTemplate(string languageCode)
         {
-            return new LanguageDisplayTemplate(languageCode, manager.GetString("LanguageDisplayName", new CultureInfo(languageCode)));
+            ResourceManager rm = new ResourceManager("Resources", Assembly.GetEntryAssembly());
+            return new LanguageDisplayTemplate(languageCode, rm.GetString("LanguageDisplayName", new CultureInfo(languageCode)));
         }
 
         public static async Task<StorageFile> GetHelpFileAsync()

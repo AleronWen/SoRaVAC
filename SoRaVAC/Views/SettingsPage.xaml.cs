@@ -196,9 +196,13 @@ namespace SoRaVAC.Views
         }
         #endregion
 
+        private readonly ResourceLoader _resourceLoader;
+
         public SettingsPage()
         {
             InitializeComponent();
+
+            _resourceLoader = ResourceLoader.GetForCurrentView();
 
             VideoSourcesList.CollectionChanged += VideoDevicesListHandleChange;
             AudioSourcesList.CollectionChanged += AudioSourcesListHandleChange;
@@ -238,12 +242,10 @@ namespace SoRaVAC.Views
             {
                 NewRelease = NewReleaseChecker.GetInstance().LastRelease;
             }
-
-            ResourceManager rm = new ResourceManager("Resources", Assembly.GetEntryAssembly());
             
             foreach (string languageCode in GlobalizationHelper.AvailableLanguages)
             {
-                LanguageDisplayTemplate language = GlobalizationHelper.GetLanguageDisplayTemplate(rm, languageCode);
+                LanguageDisplayTemplate language = GlobalizationHelper.GetLanguageDisplayTemplate(languageCode);
                 LanguageList.Add(language);
 
                 if (languageCode == Thread.CurrentThread.CurrentUICulture.Name)
