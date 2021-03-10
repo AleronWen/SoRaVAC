@@ -2,7 +2,11 @@
 
 ## Capture
 
+A venir...
+
 ## Paramètres
+
+A venir...
 
 ## Nouvelles versions
 

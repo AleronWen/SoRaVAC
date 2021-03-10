@@ -2,7 +2,11 @@
 
 ## Capture
 
+Soon...
+
 ## Settings
+
+Soon...
 
 ## New releases
 
