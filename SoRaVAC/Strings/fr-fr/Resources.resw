@@ -280,4 +280,10 @@ Ce logiciel permet, par exemple, d'afficher l'image de votre console de jeu sur 
   <data name="Shell_Help.Content" xml:space="preserve">
     <value>Aide</value>
   </data>
+  <data name="Help_ErrorDialog_UnableGettingHelpFile_Caption" xml:space="preserve">
+    <value>Erreur liée à l'aide</value>
+  </data>
+  <data name="Help_ErrorDialog_UnableGettingHelpFile_Message" xml:space="preserve">
+    <value>Une erreur est survenue pendant le traitemement du fichier d'aide. Le fichier est probalement absent ou corrompu. Si vous voyez ce message de façon récurrente merci de nous en informer via l'outil de gestion de problèmes sur le GitHub du projet (lien dans les Paramètres).</value>
+  </data>
 </root>
