@@ -269,7 +269,7 @@ Ce logiciel permet, par exemple, d'afficher l'image de votre console de jeu sur 
     <value>Français</value>
   </data>
   <data name="Settings_LanguageApplyButtonText.Content" xml:space="preserve">
-    <value>Appliquer</value>
+    <value>Relancer l'application</value>
   </data>
   <data name="Capture_Tooltip_DeviceMissing.Text" xml:space="preserve">
     <value>Périphérique non connecté</value>
@@ -285,5 +285,11 @@ Ce logiciel permet, par exemple, d'afficher l'image de votre console de jeu sur 
   </data>
   <data name="Help_ErrorDialog_UnableGettingHelpFile_Message" xml:space="preserve">
     <value>Une erreur est survenue pendant le traitemement du fichier d'aide. Le fichier est probalement absent ou corrompu. Si vous voyez ce message de façon récurrente merci de nous en informer via l'outil de gestion de problèmes sur le GitHub du projet (lien dans les Paramètres).</value>
+  </data>
+  <data name="Settings_ErrorDialog_UnableStartCapture_Caption" xml:space="preserve">
+    <value>Impossible de relancer</value>
+  </data>
+  <data name="Settings_ErrorDialog_UnableStartCapture_Message" xml:space="preserve">
+    <value>Veuillez relancer l'application manuellement.</value>
   </data>
 </root>

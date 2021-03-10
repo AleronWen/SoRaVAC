@@ -16,6 +16,7 @@ using SoRaVAC.Models;
 using SoRaVAC.Services;
 
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
 using Windows.Devices.Enumeration;
 using Windows.Globalization;
@@ -568,10 +569,28 @@ namespace SoRaVAC.Views
 
         private void LanguageApplyButton_Click(object sender, RoutedEventArgs e)
         {
-            ApplicationLanguages.PrimaryLanguageOverride = SelectedLanguage.Code;
-            Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Reset();
-            Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse().Reset();
-            Frame.Navigate(this.GetType());
+            // we check the selected code is different from the current code
+            if (SelectedLanguage.Code != ApplicationLanguages.PrimaryLanguageOverride)
+            {
+                ApplicationLanguages.PrimaryLanguageOverride = SelectedLanguage.Code;
+                Task.Run(() => DoResetApplication());
+            }
+        }
+
+        private async void DoResetApplication()
+        {
+            // Attempt restart
+            AppRestartFailureReason result =
+                await CoreApplication.RequestRestartAsync("");
+
+            // Restart request denied, show a message to the user
+            if (result == AppRestartFailureReason.NotInForeground
+                || result == AppRestartFailureReason.Other)
+            {
+                string caption = _resourceLoader.GetString("Settings_ErrorDialog_UnableStartCapture_Caption");
+                string message = _resourceLoader.GetString("Settings_ErrorDialog_UnableStartCapture_Message");
+                _ = new Dialog.ErrorDialog(caption, message).ShowAsync();
+            }
         }
     }
 }
