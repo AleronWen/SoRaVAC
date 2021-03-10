@@ -117,6 +117,10 @@ namespace SoRaVAC.Views
             }
 
             var selectedItem = GetSelectedItem(navigationView.MenuItems, e.SourcePageType);
+            if (selectedItem == null)
+            {
+                selectedItem = GetSelectedItem(navigationView.FooterMenuItems, e.SourcePageType);
+            }
             if (selectedItem != null)
             {
                 Selected = selectedItem;
