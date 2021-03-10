@@ -53,9 +53,9 @@ namespace SoRaVAC.Views
         private bool _isPreferedAudioSourcePresent;
         private bool _isPreferedAudioRendererPresent;
 
-        private PreferedDeviceInformation _preferedVideoSource;
-        private PreferedDeviceInformation _preferedAudioSource;
-        private PreferedDeviceInformation _preferedAudioRenderer;
+        private readonly PreferedDeviceInformation _preferedVideoSource;
+        private readonly PreferedDeviceInformation _preferedAudioSource;
+        private readonly PreferedDeviceInformation _preferedAudioRenderer;
 
         private readonly ResourceLoader _resourceLoader;
 
@@ -97,9 +97,9 @@ namespace SoRaVAC.Views
         }
 
         #region Device Watchers
-        private DeviceWatcherHelper VideoSourceDeviceWatcherHelper;
-        private DeviceWatcherHelper AudioSourceDeviceWatcherHelper;
-        private DeviceWatcherHelper AudioRendererDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper VideoSourceDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper AudioSourceDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper AudioRendererDeviceWatcherHelper;
         public ObservableCollection<DeviceInformationDisplay> VideoSourcesList { get; } = new ObservableCollection<DeviceInformationDisplay>();
         public ObservableCollection<DeviceInformationDisplay> AudioSourcesList { get; } = new ObservableCollection<DeviceInformationDisplay>();
         public ObservableCollection<DeviceInformationDisplay> AudioRenderersList { get; } = new ObservableCollection<DeviceInformationDisplay>();

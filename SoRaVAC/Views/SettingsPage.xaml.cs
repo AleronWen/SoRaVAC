@@ -32,7 +32,7 @@ namespace SoRaVAC.Views
     public sealed partial class SettingsPage : Page, INotifyPropertyChanged
     {
         #region Video Source properties
-        private DeviceWatcherHelper VideoSourceDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper VideoSourceDeviceWatcherHelper;
         public ObservableCollection<DeviceInformationDisplay> VideoSourcesList { get; } = new ObservableCollection<DeviceInformationDisplay>();
 
 
@@ -68,7 +68,7 @@ namespace SoRaVAC.Views
         #endregion
 
         #region Audio Source properties
-        private DeviceWatcherHelper AudioSourceDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper AudioSourceDeviceWatcherHelper;
         public ObservableCollection<DeviceInformationDisplay> AudioSourcesList { get; } = new ObservableCollection<DeviceInformationDisplay>();
 
         private DeviceInformationDisplay _selectedAudioSource;
@@ -103,7 +103,7 @@ namespace SoRaVAC.Views
         #endregion
 
         #region Audio Renderer properties
-        private DeviceWatcherHelper AudioRendererDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper AudioRendererDeviceWatcherHelper;
         public ObservableCollection<DeviceInformationDisplay> AudioRenderersList { get; } = new ObservableCollection<DeviceInformationDisplay>();
 
         private DeviceInformationDisplay _selectedAudioRenderer;
