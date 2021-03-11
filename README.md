@@ -22,7 +22,9 @@ The first released version of SoRaVAC was a .net WPF with UWP host dependency so
 
 ## Installation
 
-Run the installer package and wait for the install process to complete.
+  1. Download the certificate (.cer file) and the msixbundle file
+  2. Install the certificate in your computer. It is selfsigned, As I'm not aware of any organization that sign certificate for open source softwares for free so Windows will warn you about it.
+  3. Run the installer package and wait for the install process to complete.
 
 ## Usage
 
