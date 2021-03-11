@@ -269,7 +269,7 @@ This software permits to display your video game console on your computer's scre
     <value>English</value>
   </data>
   <data name="Settings_LanguageApplyButtonText.Content" xml:space="preserve">
-    <value>Apply</value>
+    <value>Restart the application</value>
   </data>
   <data name="Capture_Tooltip_DeviceMissing.Text" xml:space="preserve">
     <value>Device is not connected</value>
@@ -279,5 +279,17 @@ This software permits to display your video game console on your computer's scre
   </data>
   <data name="Shell_Help.Content" xml:space="preserve">
     <value>Help</value>
+  </data>
+  <data name="Help_ErrorDialog_UnableGettingHelpFile_Caption" xml:space="preserve">
+    <value>Error with help content</value>
+  </data>
+  <data name="Help_ErrorDialog_UnableGettingHelpFile_Message" xml:space="preserve">
+    <value>An error occured while getting the help file. The file is missing or corrupted. If you've seen this message more than one time please report the error on the project's issue management tool on GitHub (link in Settings).</value>
+  </data>
+  <data name="Settings_ErrorDialog_UnableStartCapture_Caption" xml:space="preserve">
+    <value>Unable to restart</value>
+  </data>
+  <data name="Settings_ErrorDialog_UnableStartCapture_Message" xml:space="preserve">
+    <value>Please restart manually the application.</value>
   </data>
 </root>

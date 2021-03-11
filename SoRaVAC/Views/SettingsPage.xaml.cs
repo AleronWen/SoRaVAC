@@ -16,6 +16,7 @@ using SoRaVAC.Models;
 using SoRaVAC.Services;
 
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
 using Windows.Devices.Enumeration;
 using Windows.Globalization;
@@ -32,7 +33,7 @@ namespace SoRaVAC.Views
     public sealed partial class SettingsPage : Page, INotifyPropertyChanged
     {
         #region Video Source properties
-        private DeviceWatcherHelper VideoSourceDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper VideoSourceDeviceWatcherHelper;
         public ObservableCollection<DeviceInformationDisplay> VideoSourcesList { get; } = new ObservableCollection<DeviceInformationDisplay>();
 
 
@@ -68,7 +69,7 @@ namespace SoRaVAC.Views
         #endregion
 
         #region Audio Source properties
-        private DeviceWatcherHelper AudioSourceDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper AudioSourceDeviceWatcherHelper;
         public ObservableCollection<DeviceInformationDisplay> AudioSourcesList { get; } = new ObservableCollection<DeviceInformationDisplay>();
 
         private DeviceInformationDisplay _selectedAudioSource;
@@ -103,7 +104,7 @@ namespace SoRaVAC.Views
         #endregion
 
         #region Audio Renderer properties
-        private DeviceWatcherHelper AudioRendererDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper AudioRendererDeviceWatcherHelper;
         public ObservableCollection<DeviceInformationDisplay> AudioRenderersList { get; } = new ObservableCollection<DeviceInformationDisplay>();
 
         private DeviceInformationDisplay _selectedAudioRenderer;
@@ -196,9 +197,13 @@ namespace SoRaVAC.Views
         }
         #endregion
 
+        private readonly ResourceLoader _resourceLoader;
+
         public SettingsPage()
         {
             InitializeComponent();
+
+            _resourceLoader = ResourceLoader.GetForCurrentView();
 
             VideoSourcesList.CollectionChanged += VideoDevicesListHandleChange;
             AudioSourcesList.CollectionChanged += AudioSourcesListHandleChange;
@@ -238,12 +243,10 @@ namespace SoRaVAC.Views
             {
                 NewRelease = NewReleaseChecker.GetInstance().LastRelease;
             }
-
-            ResourceManager rm = new ResourceManager("Resources", Assembly.GetEntryAssembly());
             
             foreach (string languageCode in GlobalizationHelper.AvailableLanguages)
             {
-                LanguageDisplayTemplate language = GlobalizationHelper.GetLanguageDisplayTemplate(rm, languageCode);
+                LanguageDisplayTemplate language = GlobalizationHelper.GetLanguageDisplayTemplate(languageCode);
                 LanguageList.Add(language);
 
                 if (languageCode == Thread.CurrentThread.CurrentUICulture.Name)
@@ -566,10 +569,28 @@ namespace SoRaVAC.Views
 
         private void LanguageApplyButton_Click(object sender, RoutedEventArgs e)
         {
-            ApplicationLanguages.PrimaryLanguageOverride = SelectedLanguage.Code;
-            Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Reset();
-            Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse().Reset();
-            Frame.Navigate(this.GetType());
+            // we check the selected code is different from the current code
+            if (SelectedLanguage.Code != ApplicationLanguages.PrimaryLanguageOverride)
+            {
+                ApplicationLanguages.PrimaryLanguageOverride = SelectedLanguage.Code;
+                Task.Run(() => DoResetApplication());
+            }
+        }
+
+        private async void DoResetApplication()
+        {
+            // Attempt restart
+            AppRestartFailureReason result =
+                await CoreApplication.RequestRestartAsync("");
+
+            // Restart request denied, show a message to the user
+            if (result == AppRestartFailureReason.NotInForeground
+                || result == AppRestartFailureReason.Other)
+            {
+                string caption = _resourceLoader.GetString("Settings_ErrorDialog_UnableStartCapture_Caption");
+                string message = _resourceLoader.GetString("Settings_ErrorDialog_UnableStartCapture_Message");
+                _ = new Dialog.ErrorDialog(caption, message).ShowAsync();
+            }
         }
     }
 }
