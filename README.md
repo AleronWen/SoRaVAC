@@ -41,7 +41,7 @@ The following devices are supported:
 - High End
   - Avermedia Live Gamer Ultra GC553 (Note: Audio is reported to be a little bit out of sync)
 - Cheap adapters (USB 3)
-- Hagibis UHC05
+  - Hagibis UHC05
 - Cheap adapters (USB 2)
   - AMANKA CJQ-ES (Warning: image quality is not very good)
   - ATopoler S1788016410
