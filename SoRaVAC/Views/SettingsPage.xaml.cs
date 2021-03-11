@@ -1,36 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-
-using Microsoft.Extensions.Options;
-
-using SoRaVAC.Contracts.Services;
-using SoRaVAC.Contracts.Views;
+using SoRaVAC.Core;
 using SoRaVAC.Helpers;
 using SoRaVAC.Models;
+using SoRaVAC.Services;
+
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.Resources;
 using Windows.Devices.Enumeration;
+using Windows.Globalization;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Navigation;
 
 namespace SoRaVAC.Views
 {
-    public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAware
+    // DONE WTS: Add other settings as necessary. For help see https://github.com/Microsoft/WindowsTemplateStudio/blob/release/docs/UWP/pages/settings-codebehind.md
+    // DONE WTS: Change the URL for your privacy policy in the Resource File, currently set to https://YourPrivacyUrlGoesHere
+    public sealed partial class SettingsPage : Page, INotifyPropertyChanged
     {
-        private readonly AppConfig _appConfig;
-        private readonly IThemeSelectorService _themeSelectorService;
-        private readonly ISystemService _systemService;
-        private readonly IApplicationInfoService _applicationInfoService;
-        private bool _isInitialized;
-        private AppTheme _theme;
-        private string _versionDescription;
-
-
         #region Video Source properties
-        private DeviceWatcherHelper VideoSourceDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper VideoSourceDeviceWatcherHelper;
         public ObservableCollection<DeviceInformationDisplay> VideoSourcesList { get; } = new ObservableCollection<DeviceInformationDisplay>();
 
 
@@ -66,7 +69,7 @@ namespace SoRaVAC.Views
         #endregion
 
         #region Audio Source properties
-        private DeviceWatcherHelper AudioSourceDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper AudioSourceDeviceWatcherHelper;
         public ObservableCollection<DeviceInformationDisplay> AudioSourcesList { get; } = new ObservableCollection<DeviceInformationDisplay>();
 
         private DeviceInformationDisplay _selectedAudioSource;
@@ -101,7 +104,7 @@ namespace SoRaVAC.Views
         #endregion
 
         #region Audio Renderer properties
-        private DeviceWatcherHelper AudioRendererDeviceWatcherHelper;
+        private readonly DeviceWatcherHelper AudioRendererDeviceWatcherHelper;
         public ObservableCollection<DeviceInformationDisplay> AudioRenderersList { get; } = new ObservableCollection<DeviceInformationDisplay>();
 
         private DeviceInformationDisplay _selectedAudioRenderer;
@@ -147,27 +150,60 @@ namespace SoRaVAC.Views
                 Set(ref _soundVolume, value);
             }
         }
-        public AppTheme Theme
+
+        private bool _isNewReleaseAvailable;
+        public bool IsNewReleaseAvailable
         {
-            get { return _theme; }
-            set { Set(ref _theme, value); }
+            get { return _isNewReleaseAvailable; }
+            set { Set(ref _isNewReleaseAvailable, value); }
         }
+
+        private Octokit.Release _newRelease;
+        public Octokit.Release NewRelease
+        {
+            get { return _newRelease; }
+            set { Set(ref _newRelease, value); }
+        }
+
+        private ElementTheme _elementTheme = ThemeSelectorService.Theme;
+
+        public ElementTheme ElementTheme
+        {
+            get { return _elementTheme; }
+
+            set { Set(ref _elementTheme, value); }
+        }
+
+        private string _versionDescription;
 
         public string VersionDescription
         {
             get { return _versionDescription; }
+
             set { Set(ref _versionDescription, value); }
+        }
+
+        public ObservableCollection<LanguageDisplayTemplate> LanguageList { get; } = new ObservableCollection<LanguageDisplayTemplate>();
+
+        private LanguageDisplayTemplate _selectedLanguage;
+
+        public LanguageDisplayTemplate SelectedLanguage
+        {
+            get => _selectedLanguage;
+            set
+            {
+                Set(ref _selectedLanguage, value);
+            }
         }
         #endregion
 
-        public SettingsPage(IOptions<AppConfig> appConfig, IThemeSelectorService themeSelectorService, ISystemService systemService, IApplicationInfoService applicationInfoService)
+        private readonly ResourceLoader _resourceLoader;
+
+        public SettingsPage()
         {
-            _appConfig = appConfig.Value;
-            _themeSelectorService = themeSelectorService;
-            _systemService = systemService;
-            _applicationInfoService = applicationInfoService;
             InitializeComponent();
-            DataContext = this;
+
+            _resourceLoader = ResourceLoader.GetForCurrentView();
 
             VideoSourcesList.CollectionChanged += VideoDevicesListHandleChange;
             AudioSourcesList.CollectionChanged += AudioSourcesListHandleChange;
@@ -192,7 +228,7 @@ namespace SoRaVAC.Views
             }
 
             double soundVolume = AudioVideoSettingsStorageHelper.LoadSoundVolume();
-            _ = Dispatcher.InvokeAsync(() => SoundVolume = soundVolume);
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => SoundVolume = soundVolume);
 
             PreferedVideoSourceIsMissing = true;
             PreferedAudioSourceIsMissing = true;
@@ -201,56 +237,55 @@ namespace SoRaVAC.Views
             VideoSourceDeviceWatcherHelper = new DeviceWatcherHelper(VideoSourcesList, this.Dispatcher);
             AudioSourceDeviceWatcherHelper = new DeviceWatcherHelper(AudioSourcesList, Dispatcher);
             AudioRendererDeviceWatcherHelper = new DeviceWatcherHelper(AudioRenderersList, Dispatcher);
+
+            IsNewReleaseAvailable = NewReleaseChecker.GetInstance().CheckForNewRelease(Assembly.GetEntryAssembly());
+            if (IsNewReleaseAvailable)
+            {
+                NewRelease = NewReleaseChecker.GetInstance().LastRelease;
+            }
+            
+            foreach (string languageCode in GlobalizationHelper.AvailableLanguages)
+            {
+                LanguageDisplayTemplate language = GlobalizationHelper.GetLanguageDisplayTemplate(languageCode);
+                LanguageList.Add(language);
+
+                if (languageCode == Thread.CurrentThread.CurrentUICulture.Name)
+                {
+                    SelectedLanguage = language;
+                }
+            }
+        }
+
+        private async Task InitializeAsync()
+        {
+            VersionDescription = GetVersionDescription();
+
+            await Task.CompletedTask;
+        }
+
+        private string GetVersionDescription()
+        {
+            var appName = "AppDisplayName".GetLocalized();
+            var package = Package.Current;
+            var packageId = package.Id;
+            var version = packageId.Version;
+
+            return $"{appName} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
 
         #region Event Handling
-        public void OnNavigatedTo(object parameter)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            VersionDescription = $"SoRaVAC - {_applicationInfoService.GetVersion()}";
-            Theme = _themeSelectorService.GetCurrentTheme();
+            await InitializeAsync();
 
             StartWatchers();
-
-            _isInitialized = true;
         }
 
-        public void OnNavigatedFrom()
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             StopWatchers();
             ResetWatchers();
         }
-
-        private void OnLightChecked(object sender, RoutedEventArgs e)
-        {
-            if (_isInitialized)
-            {
-                _themeSelectorService.SetTheme(AppTheme.Light);
-            }
-        }
-
-        private void OnDarkChecked(object sender, RoutedEventArgs e)
-        {
-            if (_isInitialized)
-            {
-                _themeSelectorService.SetTheme(AppTheme.Dark);
-            }
-        }
-
-        private void OnDefaultChecked(object sender, RoutedEventArgs e)
-        {
-            if (_isInitialized)
-            {
-                _themeSelectorService.SetTheme(AppTheme.Default);
-            }
-        }
-
-        private void OnPrivacyStatementClick(object sender, RoutedEventArgs e)
-            => _systemService.OpenInWebBrowser(_appConfig.PrivacyStatement);
-        private void LicenseLink_Click(object sender, RoutedEventArgs e)
-        => _systemService.OpenInWebBrowser(Properties.Resources.SettingsPageLicenseLink);
-
-        private void CodeRepositoryLink_Click(object sender, RoutedEventArgs e)
-        => _systemService.OpenInWebBrowser(Properties.Resources.SettingsPageCodeRepositoryLink);
 
         private void VideoDevicesListHandleChange(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -269,7 +304,7 @@ namespace SoRaVAC.Views
                             if (PreferedVideoSource.Id == device.Id)
                             {
                                 PreferedVideoSourceIsMissing = false;
-                                var task = Dispatcher.InvokeAsync(() => SelectedVideoSource = VideoSourcesList[e.NewStartingIndex]);
+                                var task = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => SelectedVideoSource = VideoSourcesList[e.NewStartingIndex]);
                                 break;
                             }
                         }
@@ -329,7 +364,7 @@ namespace SoRaVAC.Views
                             if (PreferedAudioSource.Id == device.Id)
                             {
                                 PreferedAudioSourceIsMissing = false;
-                                Task.Run(() => SelectedAudioSource = AudioSourcesList[e.NewStartingIndex]);
+                                var task = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => SelectedAudioSource = AudioSourcesList[e.NewStartingIndex]);
                                 break;
                             }
                         }
@@ -389,7 +424,7 @@ namespace SoRaVAC.Views
                             if (PreferedAudioRenderer.Id == device.Id)
                             {
                                 PreferedAudioRendererIsMissing = false;
-                                Task.Run(() => SelectedAudioRenderer = AudioRenderersList[e.NewStartingIndex]);
+                                var task = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => SelectedAudioRenderer = AudioRenderersList[e.NewStartingIndex]);
                                 break;
                             }
                         }
@@ -465,19 +500,29 @@ namespace SoRaVAC.Views
             }
         }
 
-        private void SoundVolumeSlier_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void SoundVolumeSlier_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (sender is Slider slider)
             {
                 int roundedValue = (int)Math.Round(slider.Value);
                 SoundVolumeTextBlock.Text = $"{roundedValue}%";
-                _ = Dispatcher.InvokeAsync(() => AudioVideoSettingsStorageHelper.SaveSoundVolume(roundedValue));
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await AudioVideoSettingsStorageHelper.SaveSoundVolumeAsync(roundedValue));
+            }
+        }
+
+        private async void ThemeChanged_CheckedAsync(object sender, RoutedEventArgs e)
+        {
+            var param = (sender as RadioButton)?.CommandParameter;
+
+            if (param != null)
+            {
+                await ThemeSelectorService.SetThemeAsync((ElementTheme)param);
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void Set<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        private void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
         {
             if (Equals(storage, value))
             {
@@ -520,6 +565,32 @@ namespace SoRaVAC.Views
             VideoSourceDeviceWatcherHelper.Reset();
             AudioSourceDeviceWatcherHelper.Reset();
             AudioRendererDeviceWatcherHelper.Reset();
+        }
+
+        private void LanguageApplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            // we check the selected code is different from the current code
+            if (SelectedLanguage.Code != ApplicationLanguages.PrimaryLanguageOverride)
+            {
+                ApplicationLanguages.PrimaryLanguageOverride = SelectedLanguage.Code;
+                Task.Run(() => DoResetApplication());
+            }
+        }
+
+        private async void DoResetApplication()
+        {
+            // Attempt restart
+            AppRestartFailureReason result =
+                await CoreApplication.RequestRestartAsync("");
+
+            // Restart request denied, show a message to the user
+            if (result == AppRestartFailureReason.NotInForeground
+                || result == AppRestartFailureReason.Other)
+            {
+                string caption = _resourceLoader.GetString("Settings_ErrorDialog_UnableStartCapture_Caption");
+                string message = _resourceLoader.GetString("Settings_ErrorDialog_UnableStartCapture_Message");
+                _ = new Dialog.ErrorDialog(caption, message).ShowAsync();
+            }
         }
     }
 }

@@ -1,0 +1,38 @@
+﻿<ContentDialog
+    x:Uid="DeviceSelectionDialog"
+    x:Class="SoRaVAC.Views.Dialog.DeviceSelectionDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SoRaVAC.Views.Dialog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helper="using:SoRaVAC.Helpers"
+    mc:Ignorable="d"
+    Title="Title Placeholder"
+    PrimaryButtonText="Btn PH"
+    SecondaryButtonText="Btn PH"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    IsPrimaryButtonEnabled="False">
+
+    <ContentDialog.Resources>
+        <DataTemplate x:Key="DeviceInformationDisplayTemplate" x:DataType="helper:DeviceInformationDisplay">
+            <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
+    </ContentDialog.Resources>
+
+    <StackPanel Orientation="Vertical">
+        <!-- Video Source -->
+        <TextBlock x:Uid="Settings_VideoSourceText" Style="{StaticResource BodyTextStyle}" Text="Placeholder text"/>
+        <ComboBox Width="400" ItemsSource="{x:Bind VideoSourcesList}" ItemTemplate="{StaticResource DeviceInformationDisplayTemplate}" SelectedItem="{x:Bind SelectedVideoSource, Mode=TwoWay}" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
+
+        <!-- Audio Source -->
+        <TextBlock x:Uid="Settings_AudioSourceText" Style="{StaticResource BodyTextStyle}" Text="Placeholder text"/>
+        <ComboBox Width="400" ItemsSource="{x:Bind AudioSourcesList}" ItemTemplate="{StaticResource DeviceInformationDisplayTemplate}" SelectedItem="{x:Bind SelectedAudioSource, Mode=TwoWay}" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
+
+        <!-- Audio Renderer -->
+        <TextBlock x:Uid="Settings_AudioRendererText" Style="{StaticResource BodyTextStyle}" Text="Placeholder text"/>
+        <ComboBox Width="400" ItemsSource="{x:Bind AudioRenderersList}" ItemTemplate="{StaticResource DeviceInformationDisplayTemplate}" SelectedItem="{x:Bind SelectedAudioRenderer, Mode=TwoWay}" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
+        
+    </StackPanel>
+</ContentDialog>

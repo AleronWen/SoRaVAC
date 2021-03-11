@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>SoRaVAC</value>
+    <comment>Application display name</comment>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>SoRaVAC</value>
+    <comment>Application description</comment>
+  </data>
+  <data name="Shell_Main.Content" xml:space="preserve">
+    <value>Capture</value>
+    <comment>Navigation view item name for Capture</comment>
+  </data>
+  <data name="Settings_Theme.Text" xml:space="preserve">
+    <value>Choose Theme</value>
+    <comment>Choose theme text for Settings</comment>
+  </data>
+  <data name="Settings_Theme_Dark.Content" xml:space="preserve">
+    <value>Dark</value>
+    <comment>Dark theme text for Settings</comment>
+  </data>
+  <data name="Settings_Theme_Default.Content" xml:space="preserve">
+    <value>Windows default</value>
+    <comment>Windows default theme text for Settings</comment>
+  </data>
+  <data name="Settings_Theme_Light.Content" xml:space="preserve">
+    <value>Light</value>
+    <comment>Light theme text for Settings</comment>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>About this application</value>
+    <comment>About this application title for Settings</comment>
+  </data>
+  <data name="Settings_AboutDescription.Text" xml:space="preserve">
+    <value>Some Random Video Adapater Capture displays the audio/video stream captured by a capture device (not delivered with this software) like an internal capture card or an USB capture adapter.
+This software permits to display your video game console on your computer's screen. It uses your computer sound system instead of the one from your TV or computer screen (which may be crappy).</value>
+    <comment>About this application description for Settings</comment>
+  </data>
+  <data name="Settings_PrivacyTermsLink.Content" xml:space="preserve">
+    <value>Privacy Statement</value>
+    <comment>Privacy Statement link content for Settings</comment>
+  </data>
+  <data name="Settings_PrivacyTermsLink.NavigateUri" xml:space="preserve">
+    <value>https://www.myapppolicy.com/app/aleronwen-soravac</value>
+    <comment>Here is your Privacy Statement url for Settings</comment>
+  </data>
+  <data name="Settings_Personalization.Text" xml:space="preserve">
+    <value>Personalization</value>
+    <comment>Personalization text for Settings</comment>
+  </data>
+  <data name="Capture_Volume.Text" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="Settings_AudioRendererText.Text" xml:space="preserve">
+    <value>Audio Renderer</value>
+  </data>
+  <data name="Settings_AudioSourceText.Text" xml:space="preserve">
+    <value>Audio Source</value>
+  </data>
+  <data name="Settings_AudioVideoTitle.Text" xml:space="preserve">
+    <value>Audio and Video</value>
+  </data>
+  <data name="Settings_CodeRepositoryLink.Content" xml:space="preserve">
+    <value>SoRaVAC source code and issue management are on GitHub</value>
+  </data>
+  <data name="Settings_CodeRepositoryLink.NavigateUri" xml:space="preserve">
+    <value>https://github.com/AleronWen/SoRaVAC</value>
+  </data>
+  <data name="Settings_LicenseLink.Content" xml:space="preserve">
+    <value>SoRaVAC is released under MIT LICENSE</value>
+  </data>
+  <data name="Settings_LicenseLink.NavigateUri" xml:space="preserve">
+    <value>https://opensource.org/licenses/mit-license.php</value>
+  </data>
+  <data name="Settings_NewVersionAvailableAt.Text" xml:space="preserve">
+    <value> is available on GitHub:</value>
+  </data>
+  <data name="Settings_NewVersionTitle.Text" xml:space="preserve">
+    <value>New Version</value>
+  </data>
+  <data name="Settings_NoRegistredPreferedDeviceText.Text" xml:space="preserve">
+    <value>No prefered device is registred.</value>
+  </data>
+  <data name="Settings_PreferedAudioRendererDeviceMissingText.Text" xml:space="preserve">
+    <value>Prefered audio renderer is not present. Plug the device or choose another one.</value>
+  </data>
+  <data name="Settings_PreferedAudioSourceDeviceMissingText.Text" xml:space="preserve">
+    <value>Prefered audio source is not present. Plug the device or choose another one.</value>
+  </data>
+  <data name="Settings_PreferedVideoSourceDeviceMissingText.Text" xml:space="preserve">
+    <value>Prefered video source is not present. Plug the device or choose another one.</value>
+  </data>
+  <data name="Settings_RegisterPreferedButtonText.Content" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Settings_VideoSourceText.Text" xml:space="preserve">
+    <value>Video Source</value>
+  </data>
+  <data name="Settings_VolumeText.Text" xml:space="preserve">
+    <value>Default Volume</value>
+  </data>
+  <data name="Shell_NewVersionAvailable.Content" xml:space="preserve">
+    <value>New Version Available !</value>
+  </data>
+  <data name="Capture_AudioRendererStatus.Text" xml:space="preserve">
+    <value>Audio Renderer</value>
+  </data>
+  <data name="Capture_AudioSourceStatus.Text" xml:space="preserve">
+    <value>Audio Source</value>
+  </data>
+  <data name="Capture_PreferedDevicesStatus.Text" xml:space="preserve">
+    <value>Prefered Devices Status</value>
+  </data>
+  <data name="Capture_VideoSourceStatus.Text" xml:space="preserve">
+    <value>Video Source</value>
+  </data>
+  <data name="Capture_CaptureErrorDialog_UnableStartCapture_Caption" xml:space="preserve">
+    <value>Capture error</value>
+  </data>
+  <data name="Capture_CaptureErrorDialog_UnableStartCapture_Message" xml:space="preserve">
+    <value>Unable to start the capture, please check if the device is plugged. You may also go in Settings and select another device.</value>
+  </data>
+  <data name="Capture_CaptureModeSwitch.OffContent" xml:space="preserve">
+    <value>Choose a device</value>
+  </data>
+  <data name="Capture_CaptureModeSwitch.OnContent" xml:space="preserve">
+    <value>Prefered devices</value>
+  </data>
+  <data name="Capture_CaptureModeSwitchHeader.Text" xml:space="preserve">
+    <value>Capture Mode</value>
+  </data>
+  <data name="Capture_PlayStopButtonTooltip_play" xml:space="preserve">
+    <value>Start capture</value>
+  </data>
+  <data name="Capture_PlayStopButtonTooltip_stop" xml:space="preserve">
+    <value>Stop capture</value>
+  </data>
+  <data name="DeviceSelectionDialog.PrimaryButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="DeviceSelectionDialog.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DeviceSelectionDialog.Title" xml:space="preserve">
+    <value>Capture Devices Selection</value>
+  </data>
+  <data name="Settings_Language.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LanguageDisplayName" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Settings_LanguageApplyButtonText.Content" xml:space="preserve">
+    <value>Restart the application</value>
+  </data>
+  <data name="Capture_Tooltip_DeviceMissing.Text" xml:space="preserve">
+    <value>Device is not connected</value>
+  </data>
+  <data name="Capture_Tooltip_DevicePresent.Text" xml:space="preserve">
+    <value>Device is connected</value>
+  </data>
+  <data name="Shell_Help.Content" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Help_ErrorDialog_UnableGettingHelpFile_Caption" xml:space="preserve">
+    <value>Error with help content</value>
+  </data>
+  <data name="Help_ErrorDialog_UnableGettingHelpFile_Message" xml:space="preserve">
+    <value>An error occured while getting the help file. The file is missing or corrupted. If you've seen this message more than one time please report the error on the project's issue management tool on GitHub (link in Settings).</value>
+  </data>
+  <data name="Settings_ErrorDialog_UnableStartCapture_Caption" xml:space="preserve">
+    <value>Unable to restart</value>
+  </data>
+  <data name="Settings_ErrorDialog_UnableStartCapture_Message" xml:space="preserve">
+    <value>Please restart manually the application.</value>
+  </data>
+</root>
