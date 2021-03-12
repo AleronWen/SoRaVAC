@@ -58,7 +58,7 @@ Please use the GitHub's **Issues** functionality.
 
 - [ ] Proper packaging
   - [x] test autosigned packaging
-  - [ ] move to Sicrosft Store
+  - [ ] move to Microsoft Store
 - [x] Full screen mode
 - [x] Possibility to capture without using the prefered devices
 - [x] Display prefered devices status on the capture page
