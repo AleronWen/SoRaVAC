@@ -24,7 +24,9 @@ The first released version of SoRaVAC was a .net WPF with UWP host dependency so
 
   1. Download SoRaVAC_Installer_&lt;version&gt;.zip
   2. Unzip de file
-  3. Right-click on "install.ps1" and select "Execute with PowerShell". Windows will warn you and maybe open a windows asking you to switch to developper mode, this should not be necessary, juste acknoledge the questions in the shell window.   
+  3. Right-click on "install.ps1" and select "Execute with PowerShell". Windows will warn you and maybe open a windows asking you to switch to developper mode, this is unfortunately necessary. When developper mode is activated the software can be installed.
+
+*Note*: You can disable the developper mode after the installation of the software, SoRaVAC will still be able to work.
 
 ## Usage
 
