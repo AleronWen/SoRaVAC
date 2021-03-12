@@ -22,7 +22,7 @@ The first released version of SoRaVAC was a .net WPF with UWP host dependency so
 
 ## Installation
 
-  1. Download SoRaVAC_Installer_<version>.zip
+  1. Download SoRaVAC_Installer_&lt;version&gt;.zip
   2. Unzip de file
   3. Right-click on "install.ps1" and select "Execute with PowerShell". Windows will warn you and maybe open a windows asking you to switch to developper mode, this should not be necessary, juste acknoledge the questions in the shell window.   
 
@@ -56,7 +56,9 @@ Please use the GitHub's **Issues** functionality.
 
 ## Roadmap
 
-- [x] Proper packaging
+- [ ] Proper packaging
+  - [x] test autosigned packaging
+  - [ ] move to Sicrosft Store
 - [x] Full screen mode
 - [x] Possibility to capture without using the prefered devices
 - [x] Display prefered devices status on the capture page
