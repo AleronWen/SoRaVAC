@@ -200,13 +200,13 @@ This software permits to display your video game console on your computer's scre
     <value>No prefered device is registred.</value>
   </data>
   <data name="Settings_PreferedAudioRendererDeviceMissingText.Text" xml:space="preserve">
-    <value>Prefered audio renderer is not present. Plug the device or choose another one.</value>
+    <value>Preferred audio renderer is not present. Plug the device or choose another one.</value>
   </data>
   <data name="Settings_PreferedAudioSourceDeviceMissingText.Text" xml:space="preserve">
-    <value>Prefered audio source is not present. Plug the device or choose another one.</value>
+    <value>Preferred audio source is not present. Plug the device or choose another one.</value>
   </data>
   <data name="Settings_PreferedVideoSourceDeviceMissingText.Text" xml:space="preserve">
-    <value>Prefered video source is not present. Plug the device or choose another one.</value>
+    <value>Preferred video source is not present. Plug the device or choose another one.</value>
   </data>
   <data name="Settings_RegisterPreferedButtonText.Content" xml:space="preserve">
     <value>Register</value>
@@ -227,7 +227,7 @@ This software permits to display your video game console on your computer's scre
     <value>Audio Source</value>
   </data>
   <data name="Capture_PreferedDevicesStatus.Text" xml:space="preserve">
-    <value>Prefered Devices Status</value>
+    <value>Preferred Devices Status</value>
   </data>
   <data name="Capture_VideoSourceStatus.Text" xml:space="preserve">
     <value>Video Source</value>
@@ -242,7 +242,7 @@ This software permits to display your video game console on your computer's scre
     <value>Choose a device</value>
   </data>
   <data name="Capture_CaptureModeSwitch.OnContent" xml:space="preserve">
-    <value>Prefered devices</value>
+    <value>Preferred devices</value>
   </data>
   <data name="Capture_CaptureModeSwitchHeader.Text" xml:space="preserve">
     <value>Capture Mode</value>
